@@ -1,0 +1,242 @@
+/**
+* ! Cambiando estilos predeterminados del navegador
+**/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+}
+
+/** 
+* ! Reglas de estilo para la sección del formulario
+**/
+
+/* Placeholder para realizar el cambio de fuente */
+::placeholder {
+    font-family: 'Raleway', sans-serif;
+}
+
+#formulario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 400px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 100px;
+}
+
+.titulo {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#formulario div input {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    outline: none;
+    border: 2px solid #c4c4c4;
+    padding: 0 30px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#formulario div {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+input:focus {
+    border: 2px solid #1F2937;
+}
+
+/**
+* ! Reglas de estilo para los íconos del formulario
+**/
+
+#formulario div i {
+    position: absolute;
+    padding: 10px;
+}
+
+.failure-icon,
+.error {
+    color: red;
+}
+
+success-icon {
+    color: green;
+}
+
+.error {
+    font-size: 14.5px;
+    margin-top: 5px;
+}
+
+.success-icon,
+.failure-icon {
+    right: 0;
+    opacity: 0;
+}
+
+/* Reglas de estilo para el botón enviar */
+
+button {
+    margin-top: 15px;
+    /* Separacion del text-danger */
+    margin-bottom: 15px;
+    width: 100%;
+    height: 45px;
+    background-color: #1F2937;
+    border: 2px solid #1F2937;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.1s ease;
+}
+
+/* Efecto over */
+
+button:hover {
+    opacity: 0.9;
+}
+
+/**
+* ! Reglas de estilo para la sección de redes sociales
+**/
+
+.btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.btn-1,
+.btn-2 {
+    padding: 10px 5px;
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #c4c4c4;
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.btn-2 {
+    background-color: #4f70b5;
+    color: white;
+}
+
+.or {
+    text-align: center;
+}
+
+.pregunta {
+    font-size: 15px;
+}
+
+span {
+    color: #f2796e;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+/**
+* ! Reglas de estilo para la sección de contenido 
+**/
+
+.contenido {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: #1F2937;
+    width: 40%;
+    min-height: 100vh;
+    /* Posición de la imagen */
+    padding: 10px 20px 10px 20px;
+    ;
+}
+
+/* 
+#formulario {
+    width: 45%;
+    max-width: none;
+} */
+
+.imagen {
+    background-image: url(/static/assets/img/Bufalinda_logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    /* border: 2px solid black; */
+    height: 65%;
+}
+
+.texto {
+    text-align: center;
+    color: white;
+    font-size: 18px;
+}
+
+#formulario {
+    width: 60%;
+    max-width: none;
+}
+
+/** 
+* ! Media queries para diseño responsivo
+**/
+
+@media (max-width: 750px) {
+    .container {
+        flex-direction: column;
+    }
+
+    #formulario,
+    .contenido {
+        width: 100%;
+    }
+
+    .btn {
+        flex-direction: column;
+    }
+
+    .imagen {
+        height: 70vh;
+    }
+}
+
+@media (max-width: 425px) {
+    #formulario {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1150px) {
+    #formulario {
+        /* Formulario en pantallas grandes */
+        padding: 200px;
+    }
+}
