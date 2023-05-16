@@ -77,6 +77,35 @@ warning-color : #ffa534
 danger-color : #f3545d
 
 -------------------------------------------------------------------*/
+/* CSS Añadido */
+.cont-padre-despacho{
+  display: flex;
+  /* justify-content: space-around; */
+  width: 100%;
+}
+
+.cont-izq-des-clien{
+  width: 33.33%;
+}
+
+.cont-centro-des-clien{
+  width: 33.33%;
+}
+
+.cont-der-des-clien{
+  width: 33.33%;
+}
+
+#margen-der{
+  margin: 0px 10px 0px 0px;
+}
+
+#margen-izq{
+  margin: 0px 0px 0px 10px;
+}
+
+
+
 *:focus {
   outline: 0 !important;
   box-shadow: none !important;
@@ -12394,7 +12423,7 @@ body[data-background-color="bg2"] {
 }
 
 body[data-background-color="bg3"] {
-  background: #f1f1f1;
+  background: #f1f1f1; 
 }
 
 body[data-background-color="dark"] {
