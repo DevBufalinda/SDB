@@ -1,0 +1,251 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Lista de Productos {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+	<div class="page-inner">
+		<div class="page-header">
+			<h4 class="page-title">Despacho Clientes</h4>
+			<ul class="breadcrumbs">
+				<li class="nav-home">
+					<a href="#">
+						<i class="flaticon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Tablas</a>
+				</li>
+				<li class="separator">
+					<i class="flaticon-right-arrow"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Lista de Productos</a>
+				</li>
+			</ul>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					
+					<div class="card-body">
+						<div class="table-responsive">
+							<table id="basic-datatables" class="display table table-striped table-hover">
+								<thead>
+									<tr>
+										<th>ID Dynamics</th>
+										<th>Descripción</th>
+										<th>Clase</th>
+										<th>Und. Medida</th>
+										<th>ID Serial</th>
+										<th>Peso Prom.</th>
+										<th>Unid. Centa</th>
+										<th>¿Peso Variable?</th>
+										<th>Vida Útil</th>
+										<th>Destino</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>ID Dynamics</th>
+										<th>Descripción</th>
+										<th>Clase</th>
+										<th>Und. Medida</th>
+										<th>ID Serial</th>
+										<th>Peso Prom.</th>
+										<th>Unid. Centa</th>
+										<th>¿Peso Variable?</th>
+										<th>Vida Útil</th>
+										<th>Destino</th>
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr>
+										<td>0000000603</td>
+										<td>Feta</td>
+										<td>Madurados</td>
+										<td>KGS</td>
+										<td>FE</td>
+										<td>6.00</td>
+										<td>0</td>
+										<td ><label class="form-check" class="form-check-label">
+											<input class="form-check-input" type="checkbox" value="">
+											<span class="form-check-sign"></span></label></td>
+										<td>360</td>
+										<td><div class="form-group">
+											<label for="smallSelect">Nº</label>
+											<select class="form-control form-control-sm" id="smallSelect">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+										</div></td>
+									</tr>
+									<tr>
+										<td>0000000606</td>
+										<td>Gouda</td>
+										<td>Madurados</td>
+										<td>KGS</td>
+										<td>GO</td>
+										<td>7.00</td>
+										<td>0</td>
+										<td><label class="form-check" class="form-check-label">
+											<input class="form-check-input" type="checkbox" value="">
+											<span class="form-check-sign"></span></label></td>
+										<td>360</td>
+										<td><div class="form-group">
+											<label for="smallSelect">Nº</label>
+											<select class="form-control form-control-sm" id="smallSelect">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+										</div></td>
+									</tr>
+									<tr>
+										<td>0000000607</td>
+										<td>Mozzarella Premium</td>
+										<td>Hilados</td>
+										<td>SPACK</td>
+										<td>MP</td>
+										<td>1.50</td>
+										<td>0</td>
+										<td><label class="form-check" class="form-check-label">
+											<input class="form-check-input" type="checkbox" value="">
+											<span class="form-check-sign"></span></label></td>
+										<td>70</td>
+										<td><div class="form-group">
+											<label for="smallSelect">Nº</label>
+											<select class="form-control form-control-sm" id="smallSelect">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+										</div></td>
+									</tr>
+									<tr>
+										<td>0000000608</td>
+										<td>Mozzarella Junior</td>
+										<td>Hilados</td>
+										<td>SPACK</td>
+										<td>MJ</td>
+										<td>1.80</td>
+										<td>0</td>
+										<td><label class="form-check" class="form-check-label">
+											<input class="form-check-input" type="checkbox" value="">
+											<span class="form-check-sign"></span></label></td>
+										<td>70</td>
+										<td><div class="form-group">
+											<label for="smallSelect">Nº</label>
+											<select class="form-control form-control-sm" id="smallSelect">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+										</div></td>
+									</tr>
+									<tr>
+										<td>0000000609</td>
+										<td>Bocconcini Hogar</td>
+										<td>Hilados</td>
+										<td>SPACK</td>
+										<td>BH</td>
+										<td>1.44</td>
+										<td>0</td>
+										<td><label class="form-check" class="form-check-label">
+											<input class="form-check-input" type="checkbox" value="">
+											<span class="form-check-sign"></span></label></td>
+										<td>70</td>
+										<td><div class="form-group">
+											<label for="smallSelect">Nº</label>
+											<select class="form-control form-control-sm" id="smallSelect">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+										</div></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="/static/assets/js/setting-demo2.js"></script>
+<script>
+	$(document).ready(function () {
+		$('#basic-datatables').DataTable({
+		});
+
+		 $('#multi-filter-select').DataTable({
+			"pageLength": 5,
+			initComplete: function () {
+				this.api().columns().every(function () {
+					var column = this;
+					var select = $('<select class="form-control"><option value=""></option></select>')
+						.appendTo($(column.footer()).empty())
+						.on('change', function () {
+							var val = $.fn.dataTable.util.escapeRegex(
+								$(this).val()
+							);
+
+							column
+								.search(val ? '^' + val + '$' : '', true, false)
+								.draw();
+						});
+
+					column.data().unique().sort().each(function (d, j) {
+						select.append('<option value="' + d + '">' + d + '</option>')
+					});
+				});
+			}
+		});
+
+		// Add Row
+		$('#add-row').DataTable({
+			"pageLength": 5,
+		});
+
+		var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+		$('#addRowButton').click(function () {
+			$('#add-row').dataTable().fnAddData([
+				$("#addName").val(),
+				$("#addPosition").val(),
+				$("#addOffice").val(),
+				action
+			]);
+			$('#addRowModal').modal('hide');
+
+		}); 
+	});
+</script>
+
+{% endblock javascripts %}
