@@ -115,12 +115,14 @@ body {
 }
 
 a {
-   color: #1572e8
+   color: #1572e8;
+   text-decoration:none;
 }
 
 a:focus,
 a:hover {
-   color: #1269db
+   color: #1269db;
+   text-decoration:none;
 }
 
 .h1,

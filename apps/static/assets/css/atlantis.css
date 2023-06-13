@@ -146,11 +146,13 @@ body {
 
 a {
   color: #1572E8;
+  text-decoration:none;
 }
 
 a:hover,
 a:focus {
   color: #1269DB;
+  text-decoration:none;
 }
 
 h1,
