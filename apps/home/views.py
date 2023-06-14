@@ -129,8 +129,7 @@ def getOrdList(request):
         cursor.execute("""
                                SELECT l.OrdNbr AS Orden, 
                                SUM(l.User5) AS pedido,
-                               SUM(l.QtyOrd) AS QtyOrd,
-                               SUM(l.QtyShip) AS QtyShip, 
+                               SUM(l.QtyOrd) AS QtyOrd, 
                                SUM(t.cuantos) AS cuantos,
                                ROUND(SUM(p.cargado), 2) AS cargados, 
                                h.CustID AS IDCliente,  
@@ -149,7 +148,7 @@ def getOrdList(request):
                                     FROM xSerialesTran r
                                     INNER JOIN xSerialesTemp s ON s.LotSerNbr = r.LotSerNbr
                                     GROUP BY r.RefNbr, r.InvtID) AS p ON p.InvtID = l.InvtID AND h.OrdNbr=p.RefNbr
-                        WHERE h.FrtTermsID = '6052202' AND l.InvtID = %s
+                        WHERE h.FrtTermsID = %s AND l.InvtID = %s
                         GROUP BY h.BillName,
                                  l.OrdNbr,
                                  h.ShipCustID,
@@ -158,7 +157,7 @@ def getOrdList(request):
                                  h.ShiptoID,
                                  h.ShipName
                         ORDER BY h.CustID
-                        """, [Invt_ID])
+                        """, [frt_terms_id, Invt_ID])
         rows = cursor.fetchall()
     # Devolver los resultados de la consulta como una respuesta JSON
     data = []
@@ -167,13 +166,12 @@ def getOrdList(request):
             'OrdNbr': row[0],
             'User5': row[1],
             'QtyOrd': row[2],
-            'QtyShip': row[3],
-            'cuantos': row[4],
-            'cargado': row[5],
-            'CustID': row[6],
-            'BillName': row[7],
-            'ShiptoID': row[8],
-            'ShipName': row[9],
+            'cuantos': row[3],
+            'cargado': row[4],
+            'CustID': row[5],
+            'BillName': row[6],
+            'ShiptoID': row[7],
+            'ShipName': row[8],
         })
 
     return JsonResponse({'data': data})
