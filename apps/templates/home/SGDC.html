@@ -32,6 +32,12 @@
     padding: 10px !important;
     box-sizing: border-box !important;
   }
+
+  #add-serials-info {
+    color: red;
+    font-size: 18px;
+    font-weight: 600;
+  }
 </style>
 {% endblock stylesheets %}
 <!-- PRIMERA TABLA -->
@@ -224,40 +230,8 @@
       </div>
       <!-- Modal Manifiesto FIN-->
 
-      <!-- Modal Manifiesto -->
-      <div class="modal fade" id="add-serials" tabindex="-1" aria-labelledby="add-serials-modal-label"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1350px!important;">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="add-serials-modal-label">
-                Cargar Seriales
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="row text-center">
-              <div class="modal-body">
-                <div class="table-responsive">
-                  <table id="manifiesto-table" class="table table-hover">
-                    <thead class="table-light">
-                      <tr>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                      </tr>
-                    </thead>
-                    <tbody></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal Manifiesto FIN-->
-      <div class="modal fade" id="add-serials" tabindex="-1" aria-labelledby="add-serials-modal-label"
+      <!-- Modal Añadir Seriales -->
+      <div class="modal fade" id="add-serials-modal" tabindex="-1" aria-labelledby="add-serials-modal-label"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1350px!important;">
           <div class="modal-content">
@@ -268,17 +242,16 @@
             <div class="row text-center">
               <div class="modal-body">
                 <p id="add-serials-info"></p>
-                <!-- BORRAR -->
                 <div class="table-responsive">
-                  <!-- añadiendo tabla para añadir seriales -->
-                  <table id="add-serials" class="table table-hover">
+                  <table id="add-serials-detail" class="table table-hover">
                     <thead class="table-light">
                       <tr>
-                        <th class="centered">Campo 1</th>
-                        <th class="centered">Campo 2</th>
-                        <th class="centered">Campo 3</th>
-                        <th class="centered">Campo 4</th>
-                        <th class="centered">Campo 5</th>
+                        <th>Serial</th>
+                        <th>ID</th>
+                        <th>Estado</th>
+                        <th>Peso</th>
+                        <th>Cesta</th>
+                        <th>Paleta</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -287,16 +260,17 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal" id="añadir">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="botonAnhadirSerial">
                 Añadir
               </button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-serials">
                 Cerrar
               </button>
             </div>
           </div>
         </div>
       </div>
+      <!-- Modal Manifiesto FIN-->
     </div>
   </div>
 </div>
@@ -304,129 +278,20 @@
 {% endblock content %}
 
 {% block javascripts %}
-<!-- <script>
-  $(document).ready(() => {
-    const manifiestoModal = $("#manifiesto-modal");
-    const manifiestoTable = $("#manifiesto-table");
-    const tablaSeriales = $("#tabla-seriales");
-    const addSerialsTable = $("#add-serials");
-
-    // Obtener el campo de entrada para los siguientes campos (Encabezado)
-    const frtTermsIdInput = $("#frt-terms-id");
-    const descInput = $("#desc-id");
-    const fechaInput = $("#fecha-id");
-    const estadoInput = $("#estado-id");
-    const camionInput = $("#camion-id");
-
-    // Cargar los datos de la lista de manifiestos en una tabla utilizando la API de DataTables
-    const tableManifest = manifiestoTable.DataTable({
-      order: [[2, "desc"]], //ordena de forma descendente la columna de la fecha[2]
-      ajax: {
-        url: "{% url 'getManifestList' %}",
-        dataSrc: "data",
-      },
-      columnDefs: [
-        {
-          sortable: false,
-        },
-        {
-          orderable: false,
-          targets: [0, 1, 3, 4], //desactiva las columnas que no se van a ordenar
-        },
-      ],
-      columns: [
-        { data: "FrtTermsID" },
-        { data: "Descr" },
-        { data: "User9" },
-        { data: "User7" },
-        { data: "FOBID" },
-      ],
-      scrollY: "50vh",
-      scrollCollapse: true,
-      paging: false,
-      searching: false,
-      deferRender: true,
-    });
-
-    // Datatable para el modal de añadir seriales
-    addSerialsTable.DataTable({
-      searching: false,
-      lengthChange: false,
-    });
- 
-
-    // Agregar un controlador de eventos para el clic de fila en la tabla
-    manifiestoTable.on("click", "tbody tr", { passive: true }, function () {
-      // Obtener los datos de la fila seleccionada
-      const data = tableManifest.row(this).data();
-
-      // Mostrar el valor del encabezado en el campo de entrada deshabilitado
-      frtTermsIdInput.val(data["FrtTermsID"]);
-      descInput.val(data["Descr"]);
-      fechaInput.val(data["User9"]);
-      estadoInput.val(data["User7"]);
-      camionInput.val(data["FOBID"]);
-
-      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
-        tablaSeriales.DataTable().destroy();
-      }
-
-      // Obtener la información correspondiente a cada FrtTermsID y mostrarla en la tabla principal
-      tablaSeriales
-        .DataTable({
-          data: [],
-          columns: [
-            { data: "InvtID" },
-            { data: "Descr" },
-            { data: "QtyOrd" },
-            { data: "QtyShip" },
-          ],
-          columnDefs: [{ targets: "_all" }],
-          scrollY: "35vh",
-          scrollCollapse: true,
-          paging: false,
-          searching: false,
-          deferRender: true,
-        })
-        .clear()
-        .draw();
-
-      $.ajax({
-        url: "{% url 'getSerialsList' %}",
-        data: { frt_terms_id: data["FrtTermsID"] },
-        success: (data) => {
-          tablaSeriales.DataTable().clear().rows.add(data.data).draw();
-          manifiestoModal.modal("hide");
-        },
-      });
-    });
-
-    // Agrega un event listener a cada fila de la tabla
-    tablaSeriales.on("click", "tbody tr", { passive: true }, function () {
-      const filaData = tablaSeriales.DataTable().row(this).data();
-      //  $("#fila-modal-info").text(JSON.stringify(filaData)); MUESTRA EL JSON EN EL MODAL, BORRAR
-      $("#fila-modal").modal("show");
-    });
-
-    // Agrega el evento clic al botón de cerrar
-    $("#fila-modal #close").on("click", { passive: true }, function () {
-      $("#fila-modal").modal("hide");
-    });
-  });
-</script> -->
 
 <!-- Agregar las librerías de jQuery y DataTables -->
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
  -->
-<script>
+<!-- <script>
   $(document).ready(() => {
+    //Objetos Jquery que hacen referencia a un elemento HTML mediante su selector
     const manifiestoModal = $("#manifiesto-modal");
     const manifiestoTable = $("#manifiesto-table");
     const tablaSeriales = $("#tabla-seriales");
     const addDetailTable = $("#detail-table");
-
+    const detailModal = $("#add-serials-modal");
     // Obtener el campo de entrada para los siguientes campos (Encabezado)
     const frtTermsIdInput = $("#frt-terms-id");
     const descInput = $("#desc-id");
@@ -434,24 +299,28 @@
     const estadoInput = $("#estado-id");
     const camionInput = $("#camion-id");
 
-    // Definir una variable global para almacenar el valor de FrtTermsID
-    let frtTermsID;
+    //Objeto DOM que hace referencia a un elemento HTML mediante su ID.
+    const closeButton = document.getElementById("close-modal-serials"); // Obtener el botón "Cerrar"
+
+    let frtTermsID; // Definir una variable global para almacenar el valor de FrtTermsID
+    let InvtID_getOrdList;
+    /* let InvtID_preSerialVa; */
 
     // Cargar los datos de la lista de manifiestos en una tabla utilizando la API de DataTables
     const tableManifest = manifiestoTable.DataTable({
       order: [[2, "desc"]], //ordena de forma descendente la columna de la fecha[2]
       ajax: {
+        type: 'GET',
         url: "{% url 'getManifestList' %}",
-        dataSrc: "data",
+        dataSrc: "dataManifest",
       },
       columnDefs: [
         {
           sortable: false,
-        },
-        {
           orderable: false,
           targets: [0, 1, 3, 4], //desactiva las columnas que no se van a ordenar
-        },
+          className: 'select-checkbox'
+        }
       ],
       columns: [
         { data: "FrtTermsID" },
@@ -460,7 +329,6 @@
         { data: "User7" },
         { data: "FOBID" },
       ],
-      /*  scrollY: "50vh", */
       scrollCollapse: false,
       paging: true,
       searching: false,
@@ -468,17 +336,18 @@
       lengthChange: false
     });
 
-    // Datatable para el modal de añadir seriales
-    /* detailTable.DataTable({
-      searching: false,
-      lengthChange: false,
-    }); */
-
-
-    // Agregar un controlador de eventos para el clic de fila en la tabla
+    // Agregar un controlador de eventos para el clic de fila en la tabla de #manifiesto-table
     manifiestoTable.on("click", "tbody tr", { passive: true }, function () {
+
+      //Condicion para reinicializar la tabla seriales, Carga de los productos del manifiesto
+      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
+        tablaSeriales.DataTable().destroy();
+      }
+
       // Obtener los datos de la fila seleccionada
       const data = tableManifest.row(this).data();
+      console.log(data);
+
       // Mostrar el valor del encabezado en el campo de entrada deshabilitado
       frtTermsIdInput.val(data["FrtTermsID"]);
       descInput.val(data["Descr"]);
@@ -488,10 +357,6 @@
 
       // Asignar el valor de FrtTermsID a la variable global
       frtTermsID = data["FrtTermsID"];
-
-      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
-        tablaSeriales.DataTable().destroy();
-      }
 
       // Obtener la información correspondiente a cada FrtTermsID y mostrarla en la tabla principal
       tablaSeriales
@@ -507,7 +372,6 @@
             { data: "cargado" },
           ],
           columnDefs: [{ targets: "_all" }],
-          /* scrollY: "35vh", */
           scrollCollapse: true,
           paging: false,
           searching: false,
@@ -516,9 +380,19 @@
         .clear()
         .draw();
       $.ajax({
-        url: "{% url 'getSerialsList' %}",
+        url: "{% url 'getProductList' %}",
         data: { frt_terms_id: data["FrtTermsID"] },
         success: (data) => {
+          /* console.log(data);
+          re = console.log(data.data[0]);
+          re = console.log(data.data[0].InvtID);
+          re = console.log(data.data[0].Descr);
+          re = console.log(data.data[0].User5);
+          re = console.log(data.data[0].QtyOrd);
+          re = console.log(data.data[0].QtyShip);
+          re = console.log(data.data[0].cargado);
+          re = console.log(data.data[0].cuantos); */
+          //console.log(re.length === 0)
           tablaSeriales.DataTable().clear().rows.add(data.data).draw();
           manifiestoModal.modal("hide");
         },
@@ -527,12 +401,20 @@
 
     tablaSeriales.on("click", "tbody tr", { passive: true }, function () {
 
+      //Condicion para reinicializar la detalles del producto(#detail-table)
       if ($.fn.DataTable.isDataTable(addDetailTable)) {
         addDetailTable.DataTable().destroy();
       }
 
       // Obtener los datos de la fila seleccionada
       const data = tablaSeriales.DataTable().row(this).data();
+      console.log(data);
+      let prefixSerialsData = [];
+      //InvtID_getOrdList = data["InvtID"]; //Capturando el ID del producto seleccionado del manifiesto
+
+      /* CAPTURANDO  */
+      
+      /* console.log(data.InvtID); */
 
       // Obtener la información correspondiente a cada FrtTermsID y mostrarla en la tabla principal
       addDetailTable
@@ -549,7 +431,245 @@
             { data: 'ShiptoID' },
             { data: 'ShipName' },
           ],
-          /* scrollCollapse: true, */
+          paging: false,
+          searching: false,
+          deferRender: true
+        })
+        .clear()
+        .draw();
+
+      $.ajax({
+        url: "{% url 'getOrdList' %}",
+        data: {
+          frt_terms_id: frtTermsID, //valor obtenido de la vista getManifestList
+          Invt_ID: data["InvtID"], //valor obtenido de la vista getProductList
+        },
+        success: (data) => {
+          /* console.log(data.data); */
+          /* console.log(data);
+          console.log(data.data[0]); */
+          se = data.data;
+          console.log(se);
+          for (let index = 0; index < se.length; index++) {
+          const element = se[index];
+          console.log(element);
+          }
+          /* console.log(se); */
+          /* for (let index = 0; index < se.length; index++) {
+            const element = se[index];
+            console.log(element); 
+          } */
+
+          /* console.log(se[0]); */
+          // Obtener los datos de la tercera fila en el arreglo
+          /* const rowData = se[0]; */
+
+          // Imprimir los datos de la tercera fila en la consola
+          /* console.log(rowData); */
+          /* const dataa = addDetailTable.DataTable().row(this).data();
+          console.log(dataa);  *///ordenes cargadas
+          addDetailTable.DataTable().clear().rows.add(data.data).draw();
+          /* data = addDetailTable.DataTable().row(this).data(); */
+
+        },
+
+      });
+      /*  const dataa = addDetailTable.DataTable().row(this).data(); */
+
+      addDetailTable.on('click', 'tbody tr', { passive: true }, () => {
+        /* const data = addDetailTable.DataTable().row(this).data();
+        console.log(data); */
+        //detailModal.modal('show');
+        /* const dataa = addDetailTable.DataTable().row(this).data(); */
+        /*  console.log(dataa); */
+        /*  const rowData = addDetailTable.DataTable().row(this).data();
+         
+         // Imprimir el objeto completo con sus listas
+         console.log(rowData); */
+
+        
+        
+      });
+
+    });
+
+    /* serialTable = $("#add-serials-detail").DataTable({
+      columns: [
+        { data: 'LOTSERNBR' },
+        { data: 'InvtID' },
+        { data: 'STATUS' },
+        { data: 'PESO' },
+        { data: 'CESTA' },
+        { data: 'PALETA' },
+      ],
+      scrollCollapse: false,
+      paging: true,
+      searching: false,
+      deferRender: true,
+      lengthChange: false
+    }
+    ).clear().draw(); */
+
+
+
+  });
+</script> -->
+
+<script>
+
+
+
+  /* let prefixSerialsData = [];
+
+  $.ajax({
+    url: '{% url "prefixSerialsVa" %}',
+    dataType: 'json',
+    success: response => {
+      prefixSerialsData = response.data.map(item => item.LotSerFxdVal);
+    },
+    error: () => {
+      console.log('Hubo un error al obtener los datos de la vista prefixSerialsVa.');
+    }
+  });
+ */
+
+</script>
+
+<script>
+  $(document).ready(() => {
+    //Objetos Jquery que hacen referencia a un elemento HTML mediante su selector
+    const manifiestoModal = $("#manifiesto-modal");
+    const manifiestoTable = $("#manifiesto-table");
+    const tablaSeriales = $("#tabla-seriales");
+    const addDetailTable = $("#detail-table");
+    const detailModal = $("#add-serials-modal");
+    // Obtener el campo de entrada para los siguientes campos (Encabezado)
+    const frtTermsIdInput = $("#frt-terms-id");
+    const descInput = $("#desc-id");
+    const fechaInput = $("#fecha-id");
+    const estadoInput = $("#estado-id");
+    const camionInput = $("#camion-id");
+
+    //Objeto DOM que hace referencia a un elemento HTML mediante su ID.
+    const closeButton = document.getElementById("close-modal-serials"); // Obtener el botón "Cerrar"
+
+    let frtTermsID; // Definir una variable global para almacenar el valor de FrtTermsID
+
+    // Cargar los datos de la lista de manifiestos en una tabla utilizando la API de DataTables
+    const tableManifest = manifiestoTable.DataTable({
+      order: [[2, "desc"]], //ordena de forma descendente la columna de la fecha[2]
+      ajax: {
+        type: 'GET',
+        url: "{% url 'getManifestList' %}",
+        dataSrc: "dataManifest",
+      },
+      columnDefs: [
+        {
+          sortable: false,
+          orderable: false,
+          targets: [0, 1, 3, 4], //desactiva las columnas que no se van a ordenar
+          className: 'select-checkbox'
+        }
+      ],
+      columns: [
+        { data: "FrtTermsID" },
+        { data: "Descr" },
+        { data: "User9" },
+        { data: "User7" },
+        { data: "FOBID" },
+      ],
+      scrollCollapse: false,
+      paging: true,
+      searching: false,
+      deferRender: true,
+      lengthChange: false
+    });
+
+    // Agregar un controlador de eventos para el clic de fila en la tabla de #manifiesto-table
+    manifiestoTable.on("click", "tbody tr", { passive: true }, function () {
+
+      //Condicion para reinicializar la tabla seriales, Carga de los productos del manifiesto
+      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
+        tablaSeriales.DataTable().destroy();
+      }
+
+      //CAPTURANDO LA FILA SELECCIONADA PARA EL DETALLE DE CADA ORDEN
+      const data = tableManifest.row(this).data();
+      console.log("detalles del manifiesto");
+
+      // Mostrar el valor del encabezado en el campo de entrada deshabilitado
+      frtTermsIdInput.val(data["FrtTermsID"]);
+      descInput.val(data["Descr"]);
+      fechaInput.val(data["User9"]);
+      estadoInput.val(data["User7"]);
+      camionInput.val(data["FOBID"]);
+
+      // Asignar el valor de FrtTermsID a la variable global
+      frtTermsID = data["FrtTermsID"];
+
+      // Obtener la información correspondiente a cada FrtTermsID y mostrarla en la tabla principal
+      tablaSeriales
+        .DataTable({
+          data: [],
+          columns: [
+            { data: "InvtID" },
+            { data: "Descr" },
+            { data: "User5" },
+            { data: "QtyOrd" },
+            { data: "QtyShip" },
+            { data: "cuantos" },
+            { data: "cargado" },
+          ],
+          columnDefs: [{ targets: "_all" }],
+          scrollCollapse: true,
+          paging: false,
+          searching: false,
+          deferRender: true
+        })
+        .clear()
+        .draw();
+      $.ajax({
+        url: "{% url 'getProductList' %}",
+        data: { frt_terms_id: data["FrtTermsID"] },
+        success: (data) => {
+          tablaSeriales.DataTable().clear().rows.add(data.data).draw();
+          manifiestoModal.modal("hide");
+          console.log(data.data);
+        },
+      });
+    });
+
+    let dataLotSerNbr;
+
+    tablaSeriales.on("click", "tbody tr", { passive: true }, function () {
+
+      //Condicion para reinicializar la detalles del producto(#detail-table)
+      if ($.fn.DataTable.isDataTable(addDetailTable)) {
+        addDetailTable.DataTable().destroy();
+      }
+
+      // Obtener los datos de la fila seleccionada
+      dataLotSerNbr = tablaSeriales.DataTable().row(this).data();
+      console.log("detalles de los productos");
+      console.log(dataLotSerNbr);
+      console.log("El ID del producto " + dataLotSerNbr.Descr + " es: " + dataLotSerNbr.InvtID);
+
+
+      // Obtener la información correspondiente a cada FrtTermsID y mostrarla en la tabla principal
+      addDetailTable
+        .DataTable({
+          data: [],
+          columns: [
+            { data: 'OrdNbr' },
+            { data: 'User5' },
+            { data: 'QtyOrd' },
+            { data: 'cuantos' },
+            { data: 'cargado' },
+            { data: 'CustID' },
+            { data: 'BillName' },
+            { data: 'ShiptoID' },
+            { data: 'ShipName' },
+          ],
           paging: false,
           searching: false,
           deferRender: true
@@ -560,23 +680,164 @@
         url: "{% url 'getOrdList' %}",
         data: {
           frt_terms_id: frtTermsID, //valor obtenido de la vista getManifestList
-          Invt_ID: data["InvtID"], //valor obtenido de la vista getSerialsList
+          Invt_ID: dataLotSerNbr["InvtID"], //valor obtenido de la vista getProductList
         },
         success: (data) => {
           addDetailTable.DataTable().clear().rows.add(data.data).draw();
+          /* se = data.data;
+          console.log(se); */
+          /* console.log(se[1]); */
+          /* for (let index = 0; index < se.length; index++) {
+          const element = se[index];
+          console.log(element);
+          } */
+
         },
       });
     });
 
 
-    // Agrega el evento clic al botón de cerrar
-    $("#add-serials #close").on("click", { passive: true }, function () {
-      $("#add-serials").modal("hide");
+
+
+
+    addDetailTable.on('click', 'tbody tr', { passive: true }, function () {
+      //CAPTURANDO LA FILA SELECCIONADA PARA EL DETALLE DE CADA ORDEN
+      const dataOrd = addDetailTable.DataTable().row(this).data();
+      console.log("detalles de ordenes")
+      console.log(dataOrd);
+      console.log("La orden " + dataOrd.OrdNbr + " solo recibe productos con el iD: " + dataLotSerNbr.InvtID);
+
+
+      detailModal.modal('show');
+
+      let numCaracteres = 0;
+      let timeoutId = null;
+
+      const buttonAddSerials = $("#botonAnhadirSerial");
+      const serialInput = $("#add-producto");
+      const addSerialsInfo = $("#add-serials-info");
+
+      serialInput.focus(); //no esta haciendo el enfoque del cursor
+
+      LotSerList = [];
+
+      // Crear un arreglo vacío para almacenar los seriales ingresados
+      const serialesIngresados = [];
+
+      const agregarSerial = () => {
+        const serial = serialInput.val(); //Agrega el serial en la Variable serial
+        const countLotserNbr = serial.match(/[a-zA-Z]/g);
+        const cantidadLetras = countLotserNbr ? countLotserNbr.length : 0;
+        if (serial.length === 12 || serial.length === 13) { //Verificar que la cadena de caracteres sea entre igual a 12 o 13 caracteres
+
+          if (serialesIngresados.includes(serial)) { // Verificar si el serial ya ha sido ingresado
+            addSerialsInfo.text('¡Este Serial Ha Sido Cargado!');
+            serialInput.val('');
+            return;  // Salir de la función para evitar agregar el serial repetido
+          }
+
+          $.ajax({
+            url: '{% url "addSerialsDetail" %}',
+            data: { getLotSerNbr: serial },
+            dataType: 'json',
+            success: response => {
+
+              if (response.data.length > 0 && (cantidadLetras === 2 || cantidadLetras === 3)) {
+
+                const nuevosElementos = response.data.filter(item => item.InvtID === dataLotSerNbr.InvtID);
+                if (nuevosElementos.length === 0) {
+                  addSerialsInfo.text(`¡Este Serial No Es Un Producto ${dataLotSerNbr.Descr}!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return; // Salir de la función para evitar agregar elementos que no cumplen con la condición
+                }
+
+                serialTable.rows.add(nuevosElementos).draw();
+                LotSerList = LotSerList.concat(nuevosElementos);
+
+                const todosIguales = LotSerList.every(item => item.InvtID === LotSerList[0].InvtID);
+                if (todosIguales) {
+                  console.log(`Todos los elementos en el array tienen el mismo valor de InvtID: ${LotSerList[0].InvtID}`);
+                } else {
+                  console.log('No todos los elementos en el array tienen el mismo valor de InvtID');
+                }
+
+                serialInput.val('');
+                addSerialsInfo.text('');
+                serialesIngresados.push(serial); // Agregar el serial al arreglo de seriales ingresados
+                serialInput.focus();
+
+                console.log(LotSerList);
+                console.log("la candiadad de letras es: " + cantidadLetras);
+
+              }
+              else {
+                addSerialsInfo.text('¡Este Serial No Se Ha Creado!');
+                serialInput.val('');
+                serialInput.focus();
+              }
+            },
+
+            error: () => {
+              addSerialsInfo.text('Hubo un error al obtener los detalles del serial.');
+            }
+          });
+        }
+        else {
+          if (serial === '') {
+            addSerialsInfo.text('¡No Se Permite Campos Vacios!, Ingrese Un Serial!!');
+            serialInput.val('');
+            serialInput.focus();
+          } else {
+            addSerialsInfo.text('¡Serial Invalido!, Vuelva a Intentarlo.');
+            serialInput.val('');
+            serialInput.focus();
+          }
+        }
+      };
+
+      buttonAddSerials.click(agregarSerial);
+
+      serialInput.on('keyup', e => {
+        if (e.keyCode === 13) {
+          agregarSerial();
+        }
+      });
+
+      /* serialInput.on('keyup', () => {
+        const serial = serialInput.val();
+        numCaracteres = serial.length;
+
+        if (numCaracteres === 12) {
+          timeoutId = setTimeout(() => {
+            agregarSerial();
+          }, 200);
+        } else if (numCaracteres === 13) {
+          clearTimeout(timeoutId);
+          agregarSerial();
+        }
+      }); */
+
+      closeButton.addEventListener("click", () => {
+        detailModal.modal('hide');
+      });
     });
 
-    // Ajusta automáticamente las columnas de la tabla cuando se carga la información
-    // manifiestoTable.tables({ visible: true, api: true }).columns.adjust();
-
+    serialTable = $("#add-serials-detail").DataTable({
+      columns: [
+        { data: 'LOTSERNBR' },
+        { data: 'InvtID' },
+        { data: 'STATUS' },
+        { data: 'PESO' },
+        { data: 'CESTA' },
+        { data: 'PALETA' },
+      ],
+      scrollCollapse: false,
+      paging: true,
+      searching: false,
+      deferRender: true,
+      lengthChange: false
+    }).clear().draw();
   });
 </script>
 {% endblock javascripts %}

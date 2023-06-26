@@ -89,12 +89,12 @@ DATABASES = {
     'default': {
     },
 
-    'Authentication_db': {
+    'AUTH_DB': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'db.sqlite3',
     },
 
-    "Despacho_db": {
+    "SGCD_DB": {
         "ENGINE": "mssql",
         "NAME": "P_BUFALINDAAPP",
         "USER": "",
@@ -106,8 +106,8 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['database_routers.auth_router.AuthRouter',
-                    'database_routers.table_router.TableRouter']
+DATABASE_ROUTERS = ['RoutersDB.AUTH_ROUTER.AuthRouter',
+                    'RoutersDB.SGCD_ROUTER.SGCDRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

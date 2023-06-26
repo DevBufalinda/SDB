@@ -6232,7 +6232,8 @@ label.error {
 
 .table>tbody>tr>td,
 .table>tbody>tr>th {
-   padding: 8px
+   padding: 8px;
+   height: 40px;
 }
 
 .table>tfoot>tr>td,

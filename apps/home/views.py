@@ -43,12 +43,13 @@ def pages(request):
 
 def getManifestList(request):
     # Realizar la consulta SQL a la Base de datos
-    with connections["Despacho_db"].cursor() as cursor:
+    with connections["SGCD_DB"].cursor() as cursor:
         cursor.execute("""
-                        SELECT FrtTerms.FrtTermsID AS Num_Manifiesto, 
-                               FrtTerms.Descr AS Descripcion, 
-                               CONVERT(DATE, FrtTerms.User9, 103) AS Fecha, 
-                               FrtTerms.FOBID AS Camion,
+                        SELECT RTRIM(FrtTerms.FrtTermsID) AS Num_Manifiesto, 
+                               RTRIM(FrtTerms.Descr) AS Descripcion, 
+                               CONVERT(DATE, FrtTerms.User9, 103) AS Fecha,
+                               RTRIM(FrtTerms.User7) AS Estado,
+                               RTRIM(FrtTerms.FOBID) AS Camion,
                                COUNT(SOHeader.FrtTermsID) AS Count_Ord
                         FROM FrtTerms
                         INNER JOIN SOHeader ON SOHeader.FrtTermsID = FrtTerms.FrtTermsID
@@ -56,15 +57,16 @@ def getManifestList(request):
                         GROUP BY FrtTerms.FrtTermsID, 
                                  Descr, 
                                  FrtTerms.User9,
+                                 FrtTerms.User7,
                                  FrtTerms.FOBID
                         HAVING COUNT(SOHeader.FrtTermsID) > 0
                         ORDER BY FrtTerms.User9 DESC
                         """)
         rows = cursor.fetchall()
     # Devolver los resultados de la consulta como una respuesta JSON
-    data = []
+    dataManifest = []
     for row in rows:
-        data.append({
+        dataManifest.append({
             'FrtTermsID': row[0],
             'Descr': row[1],
             'User9': row[2],
@@ -72,15 +74,15 @@ def getManifestList(request):
             'FOBID': row[4],
         })
 
-    return JsonResponse({'data': data})
+    return JsonResponse({'dataManifest': dataManifest})
 
-def getSerialsList(request):
+def getProductList(request):
     frt_terms_id = request.GET.get('frt_terms_id')
     # Realizar la consulta SQL a la Base de datos
-    with connections["Despacho_db"].cursor() as cursor:
+    with connections["SGCD_DB"].cursor() as cursor:
         cursor.execute("""
-                        SELECT l.InvtID, 
-                               l.Descr, 
+                        SELECT RTRIM(l.InvtID) AS InvtID, 
+                               RTRIM(l.Descr) AS Descr, 
                                SUM(l.User5) AS pedido, 
                                ROUND(SUM(l.QtyOrd), 2) AS QtyOrd, 
                                ROUND(SUM(l.QtyShip), 2) AS QtyShip, 
@@ -125,17 +127,17 @@ def getOrdList(request):
     Invt_ID = request.GET.get('Invt_ID')
 
     # Realizar la consulta SQL a la Base de datos
-    with connections["Despacho_db"].cursor() as cursor:
+    with connections["SGCD_DB"].cursor() as cursor:
         cursor.execute("""
-                               SELECT l.OrdNbr AS Orden, 
+                        SELECT RTRIM(l.OrdNbr) AS Orden, 
                                SUM(l.User5) AS pedido,
                                SUM(l.QtyOrd) AS QtyOrd, 
                                SUM(t.cuantos) AS cuantos,
                                ROUND(SUM(p.cargado), 2) AS cargados, 
-                               h.CustID AS IDCliente,  
-                               h.BillName AS Cliente, 
-                               h.ShiptoID AS IDSucursal, 
-                               h.ShipName AS Sucursal
+                               RTRIM(h.CustID) AS IDCliente,  
+                               RTRIM(h.BillName) AS Cliente, 
+                               RTRIM(h.ShiptoID) AS IDSucursal, 
+                               RTRIM(h.ShipName) AS Sucursal
                         FROM SOLine l
                         INNER JOIN SOHeader h ON h.OrdNbr = l.OrdNbr
                         INNER JOIN (SELECT RefNbR, 
@@ -176,3 +178,51 @@ def getOrdList(request):
 
     return JsonResponse({'data': data})
 
+def addSerialsDetail(request):
+    getLotSerNbr = request.GET.get('getLotSerNbr')
+
+    with connections["SGCD_DB"].cursor() as cursor:
+        cursor.execute("""
+                        SELECT RTRIM(LOTSERNBR) AS Serial, 
+                               RTRIM(InvtID) AS SerialID,
+                               STATUS AS Estado, 
+                               PESO AS Peso, 
+                               CESTA AS Cesta, 
+                               PALETA AS Paleta
+                        FROM xSerialesTemp
+                        WHERE RTRIM(LOTSERNBR) = %s
+                        """,[getLotSerNbr])
+        rows = cursor.fetchall()
+
+        data = []
+    for row in rows:
+         data.append({
+            'LOTSERNBR': row[0],
+            'InvtID': row[1],
+            'STATUS': row[2],
+            'PESO': row[3],
+            'CESTA': row[4],
+            'PALETA': row[5],
+        })
+         
+    return JsonResponse({'data': data})
+
+def prefixSerialsVa(request):
+
+    with connections["SGCD_DB"].cursor() as cursor:
+        cursor.execute("""
+                        SELECT RTRIM(LotSerFxdVal) AS Iniciales, 
+                               RTRIM(InvtID) AS ProductoID 
+                        FROM Inventory 
+                        WHERE LotSerFxdVal IS NOT NULL AND LotSerFxdVal <> ''
+                        """)
+        rows = cursor.fetchall()
+
+        dataPrefix = []
+    for row in rows:
+         dataPrefix.append({
+            'LotSerFxdVal': row[0],
+            'InvtID': row[1],
+        })
+         
+    return JsonResponse({'data': dataPrefix })
