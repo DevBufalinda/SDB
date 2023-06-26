@@ -745,7 +745,17 @@
               if (response.data.length > 0 && (cantidadLetras === 2 || cantidadLetras === 3)) {
 
                 const nuevosElementos = response.data.filter(item => item.InvtID === dataLotSerNbr.InvtID);
-                if (nuevosElementos.length === 0) {
+                if (nuevosElementos.some(item => item.STATUS === 'D')) {
+                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Despachado!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return;
+                }else if (nuevosElementos.some(item => item.STATUS === 'P')) {
+                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Pendiente!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return;
+                }else if (nuevosElementos.length === 0) {
                   addSerialsInfo.text(`¡Este Serial No Es Un Producto ${dataLotSerNbr.Descr}!`);
                   serialInput.val('');
                   serialInput.focus();
