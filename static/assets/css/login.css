@@ -1,0 +1,197 @@
+/**
+* ! Variables  
+**/
+
+:root {
+    --principal: #6861ce;
+    --prueba: #303f53;
+    --dark: #343a40;
+    --fuentelato: 'Lato', sans-serif;
+}
+
+/**
+* ! Estilos opcion 1
+**/
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f1f1f1;
+    font-family: var(--fuentelato);
+    height: 100vh;
+}
+
+/* .imagen-bg {
+    background-image: url(../img/section1.jpg);
+    background-repeat: no-repeat;
+    background-size: 200%;
+} */
+
+.login-box {
+    width: 320px;
+    height: 430px;
+    background: #fff;
+    box-shadow: 2px 6px 15px 0px rgba(69, 65, 78, 0.1);
+    color: var(--prueba);
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 70px 30px;
+    border-radius: 5px;
+}
+
+/*   .login-box .avatar {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+  } */
+
+.login-box .avatar {
+    width: 175px;
+    height: 195px;
+    position: absolute;
+    top: -100px;
+    left: calc(50% - 85px);
+}
+
+.login-box h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.login-box label {
+    /* margin: 0px; DESCOMENTAR PARA LA OPCION 1 */
+    margin-bottom: 10px;
+    padding: 0;
+    font-weight: bold;
+    display: block;
+}
+
+.login-box input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    border: none;
+    background: transparent;
+    outline: none;
+    height: 40px;
+    font-family: var(--fuentelato);
+    font-size: 14px;
+}
+
+.login-box input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: var(--prueba);
+    color: #8d9498;
+    font-size: 18px;
+    border-radius: 20px;
+    margin-top: 40px;
+}
+
+/* .login-box input[type="submit"]:hover {
+    cursor: pointer;
+    background: #303f53;
+    color: #fff;
+} DESCOMENTAR PARA LA OPCION 1 **/
+
+.login-box a {
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 20px;
+    color: darkgrey;
+}
+
+.login-box a:hover {
+    color: #fff;
+}
+
+
+
+
+/**
+* ! Estilos opcion 2 
+**/
+
+.titulo {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#formulario div input {
+    width: 75%;
+    height: 40px;
+    border-radius: 8px;
+    outline: none;
+    /* border: 2px solid #c4c4c4; */
+    padding: 0 30px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+
+#formulario div {
+    position: relative;
+    margin-bottom: 0px;
+}
+
+input:focus {
+    border: 2px solid var(--prueba);
+}
+
+/**
+* ! Reglas de estilo para los íconos del formulario
+**/
+
+#formulario div i {
+    position: absolute;
+    padding: 10px;
+    color: #8d9498;
+}
+
+/* Estilos para el boton enviar */
+
+button {
+    margin-top: 25px;
+    width: 100%;
+    height: 45px;
+    background-color: var(--prueba);
+    /*     border: 2px solid #1F2937; */
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s ease;
+    font-family: var(--fuentelato);
+}
+
+button:hover {
+    cursor: pointer;
+    background: #3d5069;
+    color: #fff;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/**
+* ! Text danger, error autenticacion
+**/
+
+.error-autenticacion {
+    color: rgb(190, 27, 27);
+    text-align: center;
+}

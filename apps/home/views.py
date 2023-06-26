@@ -53,7 +53,7 @@ def getManifestList(request):
                                COUNT(SOHeader.FrtTermsID) AS Count_Ord
                         FROM FrtTerms
                         INNER JOIN SOHeader ON SOHeader.FrtTermsID = FrtTerms.FrtTermsID
-                        WHERE FrtTerms.User9 >= DATEADD(month, -5, GETDATE())
+                        WHERE FrtTerms.User9 >= DATEADD(day, -15, GETDATE())
                         GROUP BY FrtTerms.FrtTermsID, 
                                  Descr, 
                                  FrtTerms.User9,
