@@ -16,7 +16,7 @@
 - ✅ JavaScript
 - ✅ Libreria jQuery JavaScript v3.5.1
 - ✅ Datatables API Versión 1.13.4
-- ✅ Plantilla Base [Django Atlantis](https://appseed.us/product/atlantis-dark/django/) - 
+- ✅ Plantilla Base [Django Atlantis](https://appseed.us/product/atlantis-dark/django/)
 
 
 ![SGCD](https://raw.githubusercontent.com/DevBufalinda/SDB/master/static/assets/img/fondo-readme.png)
