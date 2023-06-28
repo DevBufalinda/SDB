@@ -65,7 +65,7 @@ pip install -r requirements.txt
 - ✅ Abrir el Server Manager del Servidor
 - ✅ En el Dashboard, ir a la parte de `add roles and features`
 - ✅ Darle en siguiente hasta llegar a la sección `Server Roles`
-- ✅ Buscar y clickear la opción Web Server (IIS) y clikear `add features`
+- ✅ Buscar y clickear la opción Web Server (IIS) y clickear `add features`
 - ✅ Siguiente hasta llegar a la parte de `Web Server Role (IIS) >> Role Services`
 - ✅ Buscar Application Development y activar el checkbox CGI
 - ✅ Siguiente e Instalar
