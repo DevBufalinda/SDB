@@ -23,7 +23,11 @@
     margin-left: 1%;
   }
 
-  #search-form {
+  #search-form-1,
+  #search-form-2,
+  #search-form-3,
+  #search-form-4,
+  #search-form-5 {
     margin-bottom: 10%;
   }
 
@@ -75,7 +79,7 @@
         <div class="card">
           <div class="header-father" style="display: flex; justify-content:flex-start; padding: 40px 40px 0px 40px;">
             <div class="form-group">
-              <form id="search-form" class="row g-3">
+              <form id="search-form-1" class="row g-3">
                 <div class="col-auto">
                   <label for="frt-terms-id">Manifiesto</label>
                   <input type="text" id="frt-terms-id" name="frt-terms-id" class="form-control"
@@ -83,7 +87,7 @@
                 </div>
               </form>
 
-              <form id="search-form" class="row g-3">
+              <form id="search-form-2" class="row g-3">
                 <div class="col-auto">
                   <label for="desc-id">Descripción</label>
                   <input type="text" id="desc-id" name="desc-id" class="form-control" placeholder="Descripción" disabled
@@ -93,7 +97,7 @@
             </div>
 
             <div class="form-group">
-              <form id="search-form" class="row g-3">
+              <form id="search-form-3" class="row g-3">
                 <div class="col-auto">
                   <label for="fecha-id">Fecha</label>
                   <input type="text" id="fecha-id" name="fecha-id" class="form-control" placeholder="Fecha" disabled
@@ -101,7 +105,7 @@
                 </div>
               </form>
 
-              <form id="search-form" class="row g-3">
+              <form id="search-form-4" class="row g-3">
                 <div class="col-auto">
                   <label for="estado-id">Estado</label>
                   <input type="text" id="estado-id" name="estado-id" class="form-control" placeholder="Estado" disabled
@@ -111,7 +115,7 @@
             </div>
 
             <div class="form-group">
-              <form id="search-form" class="row g-3">
+              <form id="search-form-5" class="row g-3">
                 <div class="col-auto">
                   <label for="camion-id">Camión</label>
                   <input type="text" id="camion-id" name="camion-id" class="form-control" placeholder="Camión" disabled
@@ -150,7 +154,7 @@
                       <th>Cant. Pedido</th>
                       <th>Cant. Carga</th>
                       <th>Cuantos</th>
-                      <th>Seriales Cargados</th>
+                      <th>KG. Total Cargados</th>
                     </tr>
                   </thead>
                 </table>
@@ -263,7 +267,10 @@
               <button type="button" class="btn btn-primary" data-dismiss="modal" id="botonAnhadirSerial">
                 Añadir
               </button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-modal-serials">
+              <button type="button" class="btn btn-secondary" id="alert_demo_8" data-dismiss="modal">
+                Cerrar
+              </button>
+              <!--  <button type="button" class="btn btn-secondary" id="alert_demo_8" data-dismiss="modal" id="close-modal-serials">
                 Cerrar
               </button>
             </div>
@@ -293,6 +300,7 @@
     const tablaSeriales = $("#tabla-seriales");
     const addDetailTable = $("#detail-table");
     const detailModal = $("#add-serials-modal");
+    const serialTable = $("#add-serials-detail");
     // Obtener el campo de entrada para los siguientes campos (Encabezado)
     const frtTermsIdInput = $("#frt-terms-id");
     const descInput = $("#desc-id");
@@ -301,7 +309,7 @@
     const camionInput = $("#camion-id");
 
     //Objeto DOM que hace referencia a un elemento HTML mediante su ID.
-    const closeButton = document.getElementById("close-modal-serials"); // Obtener el botón "Cerrar"
+    //const closeButton = document.getElementById("close-modal-serials"); // Obtener el botón "Cerrar"
 
     let frtTermsID; // Definir una variable global para almacenar el valor de FrtTermsID
 
@@ -312,13 +320,22 @@
         type: 'GET',
         url: "{% url 'getManifestList' %}",
         dataSrc: "dataManifest",
+        error: function(xhr, status, error) {
+          var errorMessage = xhr.status + ': ' + xhr.statusText;
+          if (xhr.status === 404) {
+            errorMessage = 'No se encontró la página solicitada.';
+          } else if (xhr.status === 500) {
+            errorMessage = 'Error interno del servidor.';
+          }
+          alert('Error en la solicitud Ajax: ' + errorMessage);
+        }
       },
       columnDefs: [
         {
           sortable: false,
           orderable: false,
           targets: [0, 1, 3, 4], //desactiva las columnas que no se van a ordenar
-          className: 'select-checkbox'
+          //className: 'select-checkbox'
         }
       ],
       columns: [
@@ -386,6 +403,15 @@
           manifiestoModal.modal("hide");
           console.log(data.data);
         },
+        error: function(xhr, status, error) {
+          var errorMessage = xhr.status + ': ' + xhr.statusText;
+          if (xhr.status === 404) {
+            errorMessage = 'No se encontró la página solicitada.';
+          } else if (xhr.status === 500) {
+            errorMessage = 'Error interno del servidor.';
+          }
+          alert('Error en la solicitud Ajax: ' + errorMessage);
+        }
       });
     });
 
@@ -437,153 +463,27 @@
           /* se = data.data;
           console.log(se); */
           /* console.log(se[1]); */
-          /* for (let index = 0; index < se.length; index++) {
+          /* for (let index = 0; index <script se.length; index++) {
           const element = se[index];
           console.log(element);
           } */
 
         },
+        error: function(xhr, status, error) {
+          var errorMessage = xhr.status + ': ' + xhr.statusText;
+          if (xhr.status === 404) {
+            errorMessage = 'No se encontró la página solicitada.';
+          } else if (xhr.status === 500) {
+            errorMessage = 'Error interno del servidor.';
+          }
+          alert('Error en la solicitud Ajax: ' + errorMessage);
+        }
       });
     });
 
 
 
-
-
-    addDetailTable.on('click', 'tbody tr', { passive: true }, function () {
-      //CAPTURANDO LA FILA SELECCIONADA PARA EL DETALLE DE CADA ORDEN
-      const dataOrd = addDetailTable.DataTable().row(this).data();
-      console.log("detalles de ordenes")
-      console.log(dataOrd);
-      console.log("La orden " + dataOrd.OrdNbr + " solo recibe productos con el iD: " + dataLotSerNbr.InvtID);
-
-
-      detailModal.modal('show');
-
-      let numCaracteres = 0;
-      let timeoutId = null;
-
-      const buttonAddSerials = $("#botonAnhadirSerial");
-      const serialInput = $("#add-producto");
-      const addSerialsInfo = $("#add-serials-info");
-
-      serialInput.focus(); //no esta haciendo el enfoque del cursor
-
-      LotSerList = [];
-
-      // Crear un arreglo vacío para almacenar los seriales ingresados
-      const serialesIngresados = [];
-
-      const agregarSerial = () => {
-        const serial = serialInput.val(); //Agrega el serial en la Variable serial
-        const countLotserNbr = serial.match(/[a-zA-Z]/g);
-        const cantidadLetras = countLotserNbr ? countLotserNbr.length : 0;
-        if (serial.length === 12 || serial.length === 13) { //Verificar que la cadena de caracteres sea entre igual a 12 o 13 caracteres
-
-          if (serialesIngresados.includes(serial)) { // Verificar si el serial ya ha sido ingresado
-            addSerialsInfo.text('¡Este Serial Ha Sido Cargado!');
-            serialInput.val('');
-            return;  // Salir de la función para evitar agregar el serial repetido
-          }
-
-          $.ajax({
-            url: '{% url "addSerialsDetail" %}',
-            data: { getLotSerNbr: serial },
-            dataType: 'json',
-            success: response => {
-
-              if (response.data.length > 0 && (cantidadLetras === 2 || cantidadLetras === 3)) {
-
-                const nuevosElementos = response.data.filter(item => item.InvtID === dataLotSerNbr.InvtID);
-                if (nuevosElementos.some(item => item.STATUS === 'D')) {
-                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Despachado!`);
-                  serialInput.val('');
-                  serialInput.focus();
-                  return;
-                }else if (nuevosElementos.some(item => item.STATUS === 'P')) {
-                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Pendiente!`);
-                  serialInput.val('');
-                  serialInput.focus();
-                  return;
-                }else if (nuevosElementos.length === 0) {
-                  addSerialsInfo.text(`¡Este Serial No Es Un Producto ${dataLotSerNbr.Descr}!`);
-                  serialInput.val('');
-                  serialInput.focus();
-                  return; // Salir de la función para evitar agregar elementos que no cumplen con la condición
-                }
-
-                serialTable.rows.add(nuevosElementos).draw();
-                LotSerList = LotSerList.concat(nuevosElementos);
-
-                const todosIguales = LotSerList.every(item => item.InvtID === LotSerList[0].InvtID);
-                if (todosIguales) {
-                  console.log(`Todos los elementos en el array tienen el mismo valor de InvtID: ${LotSerList[0].InvtID}`);
-                } else {
-                  console.log('No todos los elementos en el array tienen el mismo valor de InvtID');
-                }
-
-                serialInput.val('');
-                addSerialsInfo.text('');
-                serialesIngresados.push(serial); // Agregar el serial al arreglo de seriales ingresados
-                serialInput.focus();
-
-                console.log(LotSerList);
-                console.log("la candiadad de letras es: " + cantidadLetras);
-
-              }
-              else {
-                addSerialsInfo.text('¡Este Serial No Se Ha Creado!');
-                serialInput.val('');
-                serialInput.focus();
-              }
-            },
-
-            error: () => {
-              addSerialsInfo.text('Hubo un error al obtener los detalles del serial.');
-            }
-          });
-        }
-        else {
-          if (serial === '') {
-            addSerialsInfo.text('¡No Se Permite Campos Vacios!, Ingrese Un Serial!!');
-            serialInput.val('');
-            serialInput.focus();
-          } else {
-            addSerialsInfo.text('¡Serial Invalido!, Vuelva a Intentarlo.');
-            serialInput.val('');
-            serialInput.focus();
-          }
-        }
-      };
-
-      buttonAddSerials.click(agregarSerial);
-
-      serialInput.on('keyup', e => {
-        if (e.keyCode === 13) {
-          agregarSerial();
-        }
-      });
-
-      /* serialInput.on('keyup', () => {
-        const serial = serialInput.val();
-        numCaracteres = serial.length;
-
-        if (numCaracteres === 12) {
-          timeoutId = setTimeout(() => {
-            agregarSerial();
-          }, 200);
-        } else if (numCaracteres === 13) {
-          clearTimeout(timeoutId);
-          agregarSerial();
-        }
-      }); */
-
-      closeButton.addEventListener("click", () => {
-        detailModal.modal('hide');
-      });
-    });
-
-    serialTable = $("#add-serials-detail").DataTable({
+    /* serialTable.DataTable({
       columns: [
         { data: 'LOTSERNBR' },
         { data: 'InvtID' },
@@ -597,7 +497,264 @@
       searching: false,
       deferRender: true,
       lengthChange: false
-    }).clear().draw();
+    }).clear().draw(); */
+
+    serialTable.DataTable({
+      columns: [
+        { data: 'LOTSERNBR' },
+        { data: 'InvtID' },
+        { data: 'STATUS' },
+        { data: 'PESO' },
+        { data: 'CESTA' },
+        { data: 'PALETA' },
+      ],
+      scrollCollapse: false,
+      paging: true,
+      searching: false,
+      deferRender: true,
+      lengthChange: false
+    });
+
+
+    // Agregar evento click a cada fila de la tabla
+    addDetailTable.on('click', 'tbody tr', { passive: true }, function () {
+
+      // Capturar la fila seleccionada para el detalle de cada orden
+      const dataOrd = addDetailTable.DataTable().row(this).data();
+      console.log("detalles de ordenes")
+      console.log(dataOrd);
+      console.log("La orden " + dataOrd.OrdNbr + " solo recibe productos con el iD: " + dataLotSerNbr.InvtID);
+
+      // Declarar variables locales
+      const buttonAddSerials = $("#botonAnhadirSerial");
+      const serialInput = $("#add-producto");
+      const addSerialsInfo = $("#add-serials-info");
+      
+      // Crear un arreglo vacío para almacenar los seriales ingresados
+      let LotSerList = [];
+      const serialesIngresados = [];
+
+      // Mostrar el modal de detalle
+      detailModal.modal('show');
+
+      // Enfocar el input de seriales
+      detailModal.on('shown.bs.modal', () => {
+        serialInput.focus();
+      });
+
+      // Desasociar el evento click del botón buttonAddSerials
+      buttonAddSerials.off('click');
+      serialInput.off('keypress');
+
+      // Agregar seriales al hacer clic en el botón "Agregar"
+      buttonAddSerials.on('click', () => {
+        agregarSerial();
+      });
+
+      serialInput.on('keypress', e => {
+        if (e.keyCode === 13) {
+            agregarSerial();
+          }
+      });
+      
+      // Función para agregar un serial a la tabla y al arreglo
+      const agregarSerial = () => {
+
+        const serial = serialInput.val(); // Agregar el serial en la variable serial
+        console.log('Serial ingresado:', serial);
+        const countLotserNbr = serial.match(/[a-zA-Z]/g);
+        const cantidadLetras = countLotserNbr ? countLotserNbr.length : 0;
+
+        if (serial.length === 12 || serial.length === 13) { // Verificar que la cadena de caracteres sea entre igual a 12 o 13 caracteres
+
+          if (serialesIngresados.includes(serial)) { // Verificar si el serial ya ha sido ingresado
+            addSerialsInfo.text('¡Este Serial Ha Sido Cargado!');
+            serialInput.val('');
+            return; // Salir de la función para evitar agregar el serial repetido
+          }
+
+          $.ajax({
+            url: '{% url "addSerialsDetail" %}',
+            data: { getLotSerNbr: serial },
+            dataType: 'json',
+            success: response => {
+
+              if (response.data.length > 0 && (cantidadLetras === 2 || cantidadLetras === 3)) {
+
+                const nuevosElementos = response.data.filter(item => item.InvtID === dataLotSerNbr.InvtID);
+
+                if (nuevosElementos.some(item => item.STATUS === 'D')) {
+                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Despachado!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return;
+                } else if (nuevosElementos.some(item => item.STATUS === 'P')) {
+                  addSerialsInfo.text(`¡EL Serial ${serial} Se Encuentra Pendiente!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return;
+                } else if (nuevosElementos.length === 0) {
+                  addSerialsInfo.text(`¡Este Serial No Es Un Producto ${dataLotSerNbr.Descr}!`);
+                  serialInput.val('');
+                  serialInput.focus();
+                  return; // Salir de la función para evitar agregar elementos que no cumplen con la condición
+                }
+
+                serialTable.DataTable().rows.add(nuevosElementos).draw();
+                
+                LotSerList = LotSerList.concat(nuevosElementos);
+                console.log(LotSerList);
+			          console.log("la candiadad de letras es: " + cantidadLetras);
+                serialesIngresados.push(serial); // Agregar el serial al arreglo de seriales ingresados
+
+                const todosIguales = LotSerList.every(item => item.InvtID === LotSerList[0].InvtID);
+                if (todosIguales) {
+                  console.log(`Todos los elementos en el array tienen el mismo valor de InvtID: ${LotSerList[0].InvtID}`);
+                } else {
+                  console.log('Los elementos en el array tienen diferentes valores de InvtID');
+                }
+
+                addSerialsInfo.text('');
+                serialInput.val('');
+                serialInput.focus();
+              } else {
+                addSerialsInfo.text('¡Este Serial No Se Ha Creado!');
+                serialInput.val('');
+                serialInput.focus();
+              }
+            },
+            error: () => {
+              addSerialsInfo.text('Hubo un error al obtener los detalles del serial.');
+              serialInput.val('');
+              serialInput.focus();
+            }
+          });
+
+        } 
+        else {
+          if (serial === '') {
+            addSerialsInfo.text('¡No Se Permite Campos Vacios!, Ingrese Un Serial!!');
+            serialInput.val('');
+            serialInput.focus();
+          } else {
+            addSerialsInfo.text('¡Serial Invalido!, Vuelva a Intentarlo.');
+            serialInput.val('');
+            serialInput.focus();
+          }
+        }
+      };
+    });
+
+
+    //Jquery para mostrar alerta de confirmacion al cerrar el modal de la vista que añade los seriales
+    $('#alert_demo_8').click(function (e) {
+    e.preventDefault();
+    swal({
+      title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+      text: "No podrás revertir esto.!",
+      icon: 'warning',
+      buttons: {
+        cancel: {
+          visible: true,
+          text: 'No, Cancelar!',
+          className: 'btn btn-danger'
+        },
+        confirm: {
+          text: 'Sí, Eliminar!',
+          className: 'btn btn-success'
+        }
+      }
+    }).then((willDelete) => {
+      if (willDelete) {
+        LotSerList = [];
+        serialesIngresados = [];
+        serialTable.DataTable().clear().draw();
+        detailModal.modal('hide');
+        console.log(LotSerList);
+        swal("¡Has Eliminado Los Seriales Con Éxito!", {
+          icon: "success",
+          buttons: {
+            confirm: {
+              className: 'btn btn-success'
+            }
+          }
+        });
+      } else {
+        console.log(LotSerList);
+        swal("¡Tus Seriales Han Sido Salvados!", {
+          buttons: {
+            confirm: {
+              className: 'btn btn-success'
+            }
+          }
+        });
+      }
+    });
   });
+});
+
+
 </script>
+
+<!-- <script>
+
+  /* serialInput.on('keyup', () => {
+        const serial = serialInput.val();
+        numCaracteres = serial.length;
+
+        if (numCaracteres === 12) {
+          timeoutId = setTimeout(() => {
+            agregarSerial();
+          }, 200);
+        } else if (numCaracteres === 13) {
+          clearTimeout(timeoutId);
+          agregarSerial();
+        }
+      }); */
+
+      /*  closeButton.addEventListener("click", () => {
+         detailModal.modal('hide');
+       }); */
+
+
+
+  $('#alert_demo_8').click(function (e) {
+    swal({
+      title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+      text: "No podrás revertir esto.!",
+      icon: 'warning',
+      buttons: {
+        cancel: {
+          visible: true,
+          text: 'No, Cancelar!',
+          className: 'btn btn-danger'
+        },
+        confirm: {
+          text: 'Sí, Eliminar!',
+          className: 'btn btn-success'
+        }
+      }
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("¡Has Eliminado Los Seriales Con Éxito!", {
+          icon: "success",
+          buttons: {
+            confirm: {
+              className: 'btn btn-success'
+            }
+          }
+        });
+      } else {
+        swal("¡Tus Seriales Han Sido Salvados!", {
+          buttons: {
+            confirm: {
+              className: 'btn btn-success'
+            }
+          }
+        });
+      }
+    });
+  })
+</script> -->
+
 {% endblock javascripts %}

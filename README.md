@@ -58,21 +58,21 @@ pip install -r requirements.txt
 ```
 <br />
 
-## Configuración del Servidor IIS
+## Configuración del Servidor IIS y Activación del CGI
 
 > 👉 **Paso 1** - Instalación del modulo CGI
 
 - ✅ Abrir el Server Manager del Servidor
-- ✅ En el Dashboard, ir a la parte de `add roles and features`
-- ✅ Darle en siguiente hasta llegar a la sección `Server Roles`
-- ✅ Buscar y clickear la opción Web Server (IIS) y clickear `add features`
+- ✅ Dashboard e ir a la parte de `add roles and features`
+- ✅ Siguiente hasta llegar a la sección de `Server Roles`
+- ✅ Buscar la opción Web Server (IIS) y clickear `add features`
 - ✅ Siguiente hasta llegar a la parte de `Web Server Role (IIS) >> Role Services`
 - ✅ Buscar Application Development y activar el checkbox CGI
 - ✅ Siguiente e Instalar
 
 <br />
 
-> 👉 **Paso 2** - Activación u Configuraciñon del modulo CGI
+> 👉 **Paso 2** - Activación u Configuración del modulo CGI
 
 - ✅ Abrir CMD en la ruta `C:\`
 
@@ -98,5 +98,6 @@ wfastcgi-enable
   - ✅ Dar click derecho, `Agregar directorio virtual...`.
   - ✅ Alias: `static`
   - ✅ Ruta de acceso física: `C:\inetpub\wwwroot\SDB\apps\static`
+- ✅ Abrir el navegador y ejecutar localhost
 
 <br />
