@@ -652,18 +652,11 @@
 
 
 
-      /* document.addEventListener("mouseup", function(event) {
-        var ClickModalSerials = document.getElementById("add-serials-modal");
-        if (!ClickModalSerials.contains(event.target)) {
-            alert("Outside click detected!");
-        }
-        else {
-            alert("Inside click detected!");
-        }
-      }); */
       
-      //Jquery para mostrar alerta de confirmacion al cerrar el modal de la vista que añade los seriales
-      $('#alert_demo_8').click(function (e) {
+    
+    
+    // Jquery para mostrar alerta de confirmación al cerrar el modal de la vista que añade los seriales
+   /*  $('#alert_demo_8').click(function (e) {
       e.preventDefault();
       swal({
         title: '¿Deseas Eliminar Los Seriales Seleccionados?',
@@ -682,21 +675,35 @@
         }
       }).then((willDelete) => {
         if (willDelete) {
-          LotSerList = [];
-          //serialesIngresados = [];
-          serialTable.DataTable().clear().draw();
-          detailModal.modal('hide');
-          console.log(LotSerList);
-          swal("¡Has Eliminado Los Seriales Con Éxito!", {
-            icon: "success",
-            buttons: {
-              confirm: {
-                className: 'btn btn-success'
+              const tablaDatos = serialTable.DataTable().data();
+              if (tablaDatos.any()) {
+                LotSerList = [];
+                //serialesIngresados = [];
+                serialTable.DataTable().clear().draw();
+                detailModal.modal('hide');
+                console.log("Seriales Eliminados: ");
+                console.log(LotSerList);
+                swal("¡Has Eliminado Los Seriales Con Éxito!", {
+                  icon: "success",
+                  buttons: {
+                    confirm: {
+                      className: 'btn btn-success'
+                    }
+                  }
+                });
+              } else {
+                swal("¡No Se Ha Cargado Ningun Serial Para Eliminar!", {
+                  icon: "warning",
+                  buttons: {
+                    confirm: {
+                      className: 'btn btn-success'
+                    }
+                  }
+                });
               }
-            }
-          });
         } else {
-         console.log(LotSerList);
+          console.log("Seriales Salvados: ");
+          console.log(LotSerList);
           swal("¡Tus Seriales Han Sido Salvados!", {
             buttons: {
               confirm: {
@@ -706,17 +713,159 @@
           });
         }
       });
+    }); */
+
+
+// Evento click del documento para cerrar el modal y eliminar los seriales si se hace clic fuera del modal
+  /* $(document).click(function (event) {
+    var target = $(event.target);
+    
+    if (target.is(detailModal) && detailModal.is(':visible')) {
+      console.log("Visible");
+      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
+        var tablaDatos = tablaSeriales.DataTable().data();
+        if (tablaDatos.any()) {
+          swal({
+            title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+            text: "No podrás revertir esto.!",
+            icon: 'warning',
+            buttons: {
+              cancel: {
+                visible: true,
+                text: 'No, Cancelar!',
+                className: 'btn btn-danger'
+              },
+              confirm: {
+                text: 'Sí, Eliminar!',
+                className: 'btn btn-success'
+              }
+            }
+          }).then((willDelete) => {
+            if (willDelete) {
+              LotSerList = [];
+              //serialesIngresados = [];
+              serialTable.DataTable().clear().draw();
+              detailModal.modal('hide');
+              console.log(LotSerList);
+              swal("¡Has Eliminado Los Seriales Con Éxito!", {
+                icon: "success",
+                buttons: {
+                  confirm: {
+                    className: 'btn btn-success'
+                  }
+                }
+              });
+            } else {
+              console.log(LotSerList);         
+              swal("¡Tus Seriales Han Sido Salvados!", {
+                buttons: {
+                  confirm: {
+                    className: 'btn btn-success'
+                  }
+                }
+              });
+              detailModal.modal('show');
+            }
+          });
+        } else {
+          swal("La tabla de seriales está vacía.", {
+            icon: "warning",
+            buttons: {
+              confirm: {
+                className: 'btn btn-success'
+              }
+            }
+          });
+        }
+      }
+    }
+  }); */
+
+    // Evento para mostrar la alerta de eliminación al hacer clic en el botón
+    $('#alert_demo_8').click(function (e) {
+      e.preventDefault();
+      showDeleteConfirmationModal();
+    });
+
+    // Evento para mostrar la alerta de eliminación al hacer clic fuera del modal
+    $(document).click(function (event) {
+      var target = $(event.target);
+      if (target.is(detailModal) && detailModal.is(':visible')) {
+        if ($.fn.DataTable.isDataTable(serialTable)) {
+          var tablaDatos = serialTable.DataTable().data();
+          if (tablaDatos.any()) {
+            showDeleteConfirmationModal();
+          } else {
+            detailModal.modal('hide');
+          }
+        }
+      }
+    });
+
+    // Función para mostrar la alerta de eliminación
+    function showDeleteConfirmationModal() {
+      swal({
+        title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+        text: "No podrás revertir esto.!",
+        icon: 'warning',
+        buttons: {
+          cancel: {
+            visible: true,
+            text: 'No, Cancelar!',
+            className: 'btn btn-danger'
+          },
+          confirm: {
+            text: 'Sí, Eliminar!',
+            className: 'btn btn-success'
+          }
+        }
+      }).then((willDelete) => {
+        if (willDelete) {
+          const tablaDatos = serialTable.DataTable().data();
+          if (tablaDatos.any()) {
+            LotSerList = [];
+            //serialesIngresados = [];
+            serialTable.DataTable().clear().draw();
+            detailModal.modal('hide');
+            console.log("Seriales Eliminados: ");
+            console.log(LotSerList);
+            swal("¡Has Eliminado Los Seriales Con Éxito!", {
+              icon: "success",
+              buttons: {
+                confirm: {
+                  className: 'btn btn-success'
+                }
+              }
+            });
+          } else {
+            swal("¡No Se Ha Cargado Ningun Serial Para Eliminar!", {
+              icon: "warning",
+              buttons: {
+                confirm: {
+                  className: 'btn btn-success'
+                }
+              }
+            });
+          }
+        } else {
+          console.log("Seriales Salvados: ");
+          console.log(LotSerList);
+          swal("¡Tus Seriales Han Sido Salvados!", {
+            buttons: {
+              confirm: {
+                className: 'btn btn-success'
+              }
+            }
+          });
+          detailModal.modal('show');
+        }
+      });
+    }
     });
 
 
 
-
-
-    });
-
-
-
-    $.ajax({
+    /* $.ajax({
       type: "GET",
       url: "{% url 'prefixSerialsVa' %}",
       dataType: "json",
@@ -728,7 +877,7 @@
       error: function(xhr, status, error) {
         console.log(error);
       }
-    });
+    }); */
 
 
 
