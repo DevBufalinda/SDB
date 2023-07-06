@@ -352,14 +352,20 @@
       lengthChange: false
     });
 
+    
     // Agregar un controlador de eventos para el clic de fila en la tabla de #manifiesto-table
     manifiestoTable.on("click", "tbody tr", { passive: true }, function () {
-
+      
       //Condicion para reinicializar la tabla seriales, Carga de los productos del manifiesto
       if ($.fn.DataTable.isDataTable(tablaSeriales)) {
         tablaSeriales.DataTable().destroy();
       }
 
+      //Condicion para borrar la tabla de ordenes cada vez que se cambia de manifiesto
+      if ($.fn.DataTable.isDataTable(addDetailTable)) {
+        addDetailTable.DataTable().clear().draw();
+      }
+      
       //CAPTURANDO LA FILA SELECCIONADA PARA EL DETALLE DE CADA ORDEN
       const data = tableManifest.row(this).data();
       console.log("detalles del manifiesto");
@@ -531,9 +537,9 @@
       const addSerialsInfo = $("#add-serials-info");
       
       // Crear un arreglo vacío para almacenar los seriales ingresados
-      let LotSerList = [];
+      var LotSerList = [];
       const serialesIngresados = [];
-
+      console.log(LotSerList);
       // Mostrar el modal de detalle
       detailModal.modal('show');
 
@@ -643,54 +649,89 @@
           }
         }
       };
-    });
 
 
-    //Jquery para mostrar alerta de confirmacion al cerrar el modal de la vista que añade los seriales
-    $('#alert_demo_8').click(function (e) {
-    e.preventDefault();
-    swal({
-      title: '¿Deseas Eliminar Los Seriales Seleccionados?',
-      text: "No podrás revertir esto.!",
-      icon: 'warning',
-      buttons: {
-        cancel: {
-          visible: true,
-          text: 'No, Cancelar!',
-          className: 'btn btn-danger'
-        },
-        confirm: {
-          text: 'Sí, Eliminar!',
-          className: 'btn btn-success'
+
+      /* document.addEventListener("mouseup", function(event) {
+        var ClickModalSerials = document.getElementById("add-serials-modal");
+        if (!ClickModalSerials.contains(event.target)) {
+            alert("Outside click detected!");
         }
-      }
-    }).then((willDelete) => {
-      if (willDelete) {
-        LotSerList = [];
-        serialesIngresados = [];
-        serialTable.DataTable().clear().draw();
-        detailModal.modal('hide');
-        console.log(LotSerList);
-        swal("¡Has Eliminado Los Seriales Con Éxito!", {
-          icon: "success",
-          buttons: {
-            confirm: {
-              className: 'btn btn-success'
-            }
+        else {
+            alert("Inside click detected!");
+        }
+      }); */
+      
+      //Jquery para mostrar alerta de confirmacion al cerrar el modal de la vista que añade los seriales
+      $('#alert_demo_8').click(function (e) {
+      e.preventDefault();
+      swal({
+        title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+        text: "No podrás revertir esto.!",
+        icon: 'warning',
+        buttons: {
+          cancel: {
+            visible: true,
+            text: 'No, Cancelar!',
+            className: 'btn btn-danger'
+          },
+          confirm: {
+            text: 'Sí, Eliminar!',
+            className: 'btn btn-success'
           }
-        });
-      } else {
-        console.log(LotSerList);
-        swal("¡Tus Seriales Han Sido Salvados!", {
-          buttons: {
-            confirm: {
-              className: 'btn btn-success'
+        }
+      }).then((willDelete) => {
+        if (willDelete) {
+          LotSerList = [];
+          //serialesIngresados = [];
+          serialTable.DataTable().clear().draw();
+          detailModal.modal('hide');
+          console.log(LotSerList);
+          swal("¡Has Eliminado Los Seriales Con Éxito!", {
+            icon: "success",
+            buttons: {
+              confirm: {
+                className: 'btn btn-success'
+              }
             }
-          }
-        });
+          });
+        } else {
+         console.log(LotSerList);
+          swal("¡Tus Seriales Han Sido Salvados!", {
+            buttons: {
+              confirm: {
+                className: 'btn btn-success'
+              }
+            }
+          });
+        }
+      });
+    });
+
+
+
+
+
+    });
+
+
+
+    $.ajax({
+      type: "GET",
+      url: "{% url 'prefixSerialsVa' %}",
+      dataType: "json",
+      success: function(response) {
+        const dataPrefix = response.dataPrefix;
+        console.log(dataPrefix);
+        // Realiza las validaciones necesarias con los datos obtenidos.
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
       }
     });
-  });
+
+
+
 });
 
 

@@ -90,12 +90,12 @@ def getProductList(request):
                                ROUND(SUM(p.cargado), 2) AS ser_cargados
                         FROM SOLine l
                         INNER JOIN SOHeader h ON h.OrdNbr = l.OrdNbr
-                        INNER JOIN (SELECT RefNbR, 
+                        LEFT JOIN (SELECT RefNbR, 
                                            InvtID,
                                            COUNT(INVTID) AS cuantos 
                                     FROM xserialesTran
                                     GROUP BY RefNbr, InvtID) t ON t.RefNbr = h.OrdNbr AND l.InvtID = t.InvtID
-                        INNER JOIN (SELECT r.RefNbr, 
+                        LEFT JOIN (SELECT r.RefNbr, 
                                            r.InvtID,
                                            SUM(s.PESO) AS cargado
                                     FROM xSerialesTran r
@@ -140,11 +140,11 @@ def getOrdList(request):
                                RTRIM(h.ShipName) AS Sucursal
                         FROM SOLine l
                         INNER JOIN SOHeader h ON h.OrdNbr = l.OrdNbr
-                        INNER JOIN (SELECT RefNbR, 
+                        LEFT JOIN (SELECT RefNbR, 
                                            InvtID,
                                            COUNT(INVTID) AS cuantos 
                                     FROM xserialesTran GROUP BY RefNbr, InvtID) t ON t.RefNbr = h.OrdNbr AND l.InvtID = t.InvtID
-                        INNER JOIN (SELECT r.RefNbr, 
+                        LEFT JOIN (SELECT r.RefNbr, 
                                            r.InvtID,
                                            SUM(s.PESO) AS cargado 
                                     FROM xSerialesTran r
@@ -225,4 +225,4 @@ def prefixSerialsVa(request):
             'InvtID': row[1],
         })
          
-    return JsonResponse({'data': dataPrefix })
+    return JsonResponse({'dataPrefix': dataPrefix })
