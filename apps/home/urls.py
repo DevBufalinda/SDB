@@ -4,7 +4,7 @@ from apps.home import views
 urlpatterns = [
 
     # Vista hacia la pagina home
-    path('', views.index, name = 'home'),
+    path('HOME/', views.index, name = 'home'),
 
     # Vista con respecto a todos los productos asociados a cada manifiesto
     path('SERIALS/', views.getProductList, name ='getProductList'),

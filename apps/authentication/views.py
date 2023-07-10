@@ -22,7 +22,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/")
+                return redirect("/SDB/HOME/")
             else:
                 msg = 'Usuario y/o contraseña incorrecta'
         else:
