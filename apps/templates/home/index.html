@@ -1,18 +1,14 @@
-{% extends "layouts/base.html" %}
-
-{% block title %} Inicio {% endblock %}
+{% extends "layouts/base.html" %} {% block title %} Inicio {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
 <div class="content">
 	<div class="panel-header bg-primary-gradient">
 		<div class="page-inner py-5">
-			<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+			<!--<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
 				<div>
-					<h1 class="text-white pb-2 fw-bold">Bienvenido</h1>
+					<h1 class="fw-bold">Bienvenido</h1>
 
 					<h4 class="text-white op-7 mb-2">{{ user }}</h4>
 				</div>
@@ -20,7 +16,7 @@
 					<a href="#" class="btn btn-white btn-border btn-round mr-2">Botón 1</a>
 					<a href="#" class="btn btn-secondary btn-round">Botón 2</a>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div class="page-inner mt--5">
@@ -28,9 +24,12 @@
 			<div class="col-md-6">
 				<div class="card full-height">
 					<div class="card-body">
-						<div class="card-title">Overall statistics</div>
-						<div class="card-category">Daily information about statistics in system</div>
-						<div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
+						
+						<h1 class="fw-bold" style="display: inline;">Bienvenido, </h1>
+						<h3 class="fw-bold" style="display: inline;">{{ user }}</h3>
+						
+						<!-- <div class="card-category">Daily information about statistics in system</div> -->
+						<!-- <div class="d-flex flex-wrap justify-content-around pb-2 pt-4">
 							<div class="px-2 pb-2 pb-md-0 text-center">
 								<div id="circles-1"></div>
 								<h6 class="fw-bold mt-3 mb-0">New Users</h6>
@@ -43,11 +42,11 @@
 								<div id="circles-3"></div>
 								<h6 class="fw-bold mt-3 mb-0">Subscribers</h6>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<!-- <div class="col-md-6">
 				<div class="card full-height">
 					<div class="card-body">
 						<div class="card-title">Total income & spend statistics</div>
@@ -70,9 +69,9 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header">
@@ -128,8 +127,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row row-card-no-pd">
+		</div> -->
+		<!-- <div class="row row-card-no-pd">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
@@ -250,8 +249,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
+		</div> -->
+		<!-- <div class="row">
 			<div class="col-md-4">
 				<div class="card">
 					<div class="card-header">
@@ -409,8 +408,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
+		</div> -->
+		<!-- <div class="row">
 			<div class="col-md-6">
 				<div class="card full-height">
 					<div class="card-header">
@@ -546,79 +545,81 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>
-{% include 'includes/footer.html' %}
 
 {% endblock content %}
-
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
 <!-- Atlantis DEMO methods, don't include it in your project! -->
-<script src="/static/assets/js/setting-demo.js"></script>
+<!-- <script src="/static/assets/js/setting-demo.js"></script>
 <script src="/static/assets/js/demo.js"></script>
 
 <script>
 	Circles.create({
-		id: 'circles-1',
+		id: "circles-1",
 		radius: 45,
 		value: 60,
 		maxValue: 100,
 		width: 7,
 		text: 5,
-		colors: ['#f1f1f1', '#FF9E27'],
+		colors: ["#f1f1f1", "#FF9E27"],
 		duration: 400,
-		wrpClass: 'circles-wrp',
-		textClass: 'circles-text',
+		wrpClass: "circles-wrp",
+		textClass: "circles-text",
 		styleWrapper: true,
-		styleText: true
-	})
+		styleText: true,
+	});
 
 	Circles.create({
-		id: 'circles-2',
+		id: "circles-2",
 		radius: 45,
 		value: 70,
 		maxValue: 100,
 		width: 7,
 		text: 36,
-		colors: ['#f1f1f1', '#2BB930'],
+		colors: ["#f1f1f1", "#2BB930"],
 		duration: 400,
-		wrpClass: 'circles-wrp',
-		textClass: 'circles-text',
+		wrpClass: "circles-wrp",
+		textClass: "circles-text",
 		styleWrapper: true,
-		styleText: true
-	})
+		styleText: true,
+	});
 
 	Circles.create({
-		id: 'circles-3',
+		id: "circles-3",
 		radius: 45,
 		value: 40,
 		maxValue: 100,
 		width: 7,
 		text: 12,
-		colors: ['#f1f1f1', '#F25961'],
+		colors: ["#f1f1f1", "#F25961"],
 		duration: 400,
-		wrpClass: 'circles-wrp',
-		textClass: 'circles-text',
+		wrpClass: "circles-wrp",
+		textClass: "circles-text",
 		styleWrapper: true,
-		styleText: true
-	})
+		styleText: true,
+	});
 
-	var totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
+	var totalIncomeChart = document
+		.getElementById("totalIncomeChart")
+		.getContext("2d");
 
 	var mytotalIncomeChart = new Chart(totalIncomeChart, {
-		type: 'bar',
+		type: "bar",
 		data: {
 			labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
-			datasets: [{
-				label: "Total Income",
-				backgroundColor: '#ff9e27',
-				borderColor: 'rgb(23, 125, 255)',
-				data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-			}],
+			datasets: [
+				{
+					label: "Total Income",
+					backgroundColor: "#ff9e27",
+					borderColor: "rgb(23, 125, 255)",
+					data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+				},
+			],
 		},
 		options: {
 			responsive: true,
@@ -627,33 +628,37 @@
 				display: false,
 			},
 			scales: {
-				yAxes: [{
-					ticks: {
-						display: false //this will remove only the label
+				yAxes: [
+					{
+						ticks: {
+							display: false, //this will remove only the label
+						},
+						gridLines: {
+							drawBorder: false,
+							display: false,
+						},
 					},
-					gridLines: {
-						drawBorder: false,
-						display: false
-					}
-				}],
-				xAxes: [{
-					gridLines: {
-						drawBorder: false,
-						display: false
-					}
-				}]
+				],
+				xAxes: [
+					{
+						gridLines: {
+							drawBorder: false,
+							display: false,
+						},
+					},
+				],
 			},
-		}
+		},
 	});
 
-	$('#lineChart').sparkline([105, 103, 123, 100, 95, 105, 115], {
-		type: 'line',
-		height: '70',
-		width: '100%',
-		lineWidth: '2',
-		lineColor: '#ffa534',
-		fillColor: 'rgba(255, 165, 52, .14)'
+	$("#lineChart").sparkline([105, 103, 123, 100, 95, 105, 115], {
+		type: "line",
+		height: "70",
+		width: "100%",
+		lineWidth: "2",
+		lineColor: "#ffa534",
+		fillColor: "rgba(255, 165, 52, .14)",
 	});
-</script>
+</script> -->
 
 {% endblock javascripts %}

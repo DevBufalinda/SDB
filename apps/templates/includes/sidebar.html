@@ -11,7 +11,8 @@
 				<div class="info">
 					<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 						<span>
-							{{ request.user.username }}
+							<!-- {{ request.user.username }} -->
+							{{ request.user.first_name }} {{ request.user.last_name }}
 							<span class="user-level">
 								{{ request.user.email }}
 							</span>
@@ -123,24 +124,24 @@
 				</li> -->
 
 				<!-- Añadiendo al menu despacho clientes y devoluciones -->
-				<li class="nav-item {% if 'SGDCd' in segment %} active {% endif %}">
+				<li class="nav-item {% if 'SGDC' in segment %} active {% endif %}">
 					<a href="/SDB/HOME/SGDC.html">
 						<i class="fas fa-dolly-flatbed"></i>
 						<p>Despacho Clientes</p>
 					</a>
 				</li>
 
-				<li class="nav-item {% if 'Despacho-Devoluciones' in segment %} active {% endif %}">
-					<a href="/Despacho-Devoluciones.html">
+				<!-- <li class="nav-item {% if 'Despacho-Devoluciones' in segment %} active {% endif %}">
+					<a href="/SDB/HOME/Despacho-Devoluciones.html">
 						<i class="fas fa-reply"></i>
 						<p>Devoluciones</p>
 					</a>
-				</li>
+				</li> -->
 				<!-- ----------------------- -->
 
 				<!-- Añadiendo lista de productos -->
 				<li class="nav-item {% if 'Productos-lista' in segment %} active {% endif %}">
-					<a href="/Productos-lista.html">
+					<a href="/SDB/HOME/Productos-lista.html">
 						<i class="fas fa-qrcode"></i>
 						<p>Productos</p>
 					</a>

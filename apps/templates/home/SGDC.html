@@ -42,9 +42,13 @@
     font-size: 18px;
     font-weight: 600;
   }
+
+  input#add-producto {
+    width: 90%;
+    /* margin-right: 40%; */
+}
 </style>
 {% endblock stylesheets %}
-<!-- PRIMERA TABLA -->
 
 
 {% block content %}
@@ -132,7 +136,7 @@
           </div>
           <div class="buscar">
             <div class="boton-div">
-              <button id="search-manifiesto" type="button" class="btn btn-primary" data-bs-toggle="modal"
+              <button id="search-manifiesto" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                 data-bs-target="#manifiesto-modal">
                 Buscar
               </button>
@@ -206,7 +210,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1350px!important;">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="manifiesto-modal-label">
+              <h5 class="modal-title" id="manifiesto-modal-label" style="font-size: 18px; font-weight: 600;">
                 Lista de Manifiestos
               </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -240,7 +244,7 @@
         <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1350px!important;">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="add-serials-modal-label">Añadir Seriales</h5>
+              <h5 class="modal-title" id="add-serials-modal-label" style="font-size: 18px; font-weight: 600;">Añadir Seriales</h5>
               <input type="text" class="form-control" placeholder="Añadir Serial del producto" id="add-producto" />
             </div>
             <div class="row text-center">
@@ -250,6 +254,9 @@
                   <table id="add-serials-detail" class="table table-hover">
                     <thead class="table-light">
                       <tr>
+                        <th><label class="form-check" class="form-check-label">
+                            <input class="form-check-input" type="checkbox" id="checkbox-all">
+                            <span class="form-check-sign"></span></label></th>
                         <th>Serial</th>
                         <th>ID</th>
                         <th>Estado</th>
@@ -264,23 +271,22 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal" id="botonAnhadirSerial">
+              <button type="button" class="btn btn-outline-success" data-dismiss="modal" id="botonAnhadirSerial">
                 Añadir
               </button>
-              <button type="button" class="btn btn-secondary" id="alert_demo_8" data-dismiss="modal">
-                Cerrar
+              <button type="button" class="btn btn-outline-danger" id="alert_demo_8" data-dismiss="modal">
+                Eliminar
               </button>
-              <!--  <button type="button" class="btn btn-secondary" id="alert_demo_8" data-dismiss="modal" id="close-modal-serials">
-                Cerrar
-              </button>
+      <!-- Modal Manifiesto FIN-->
             </div>
           </div>
         </div>
       </div>
-      <!-- Modal Manifiesto FIN-->
     </div>
   </div>
 </div>
+
+
 
 {% endblock content %}
 
@@ -289,8 +295,7 @@
 <!-- Agregar las librerías de jQuery y DataTables -->
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
- -->
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>-->
 
 <script>
   $(document).ready(() => {
@@ -320,7 +325,7 @@
         type: 'GET',
         url: "{% url 'getManifestList' %}",
         dataSrc: "dataManifest",
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           var errorMessage = xhr.status + ': ' + xhr.statusText;
           if (xhr.status === 404) {
             errorMessage = 'No se encontró la página solicitada.';
@@ -352,10 +357,10 @@
       lengthChange: false
     });
 
-    
+
     // Agregar un controlador de eventos para el clic de fila en la tabla de #manifiesto-table
     manifiestoTable.on("click", "tbody tr", { passive: true }, function () {
-      
+
       //Condicion para reinicializar la tabla seriales, Carga de los productos del manifiesto
       if ($.fn.DataTable.isDataTable(tablaSeriales)) {
         tablaSeriales.DataTable().destroy();
@@ -365,7 +370,7 @@
       if ($.fn.DataTable.isDataTable(addDetailTable)) {
         addDetailTable.DataTable().clear().draw();
       }
-      
+
       //CAPTURANDO LA FILA SELECCIONADA PARA EL DETALLE DE CADA ORDEN
       const data = tableManifest.row(this).data();
       console.log("detalles del manifiesto");
@@ -393,7 +398,11 @@
             { data: "cuantos" },
             { data: "cargado" },
           ],
-          columnDefs: [{ targets: "_all" }],
+          columnDefs: [{
+            sortable: false,
+            orderable: false,
+            targets: [1, 4, 5, 6],
+          }],
           scrollCollapse: true,
           paging: false,
           searching: false,
@@ -409,7 +418,7 @@
           manifiestoModal.modal("hide");
           console.log(data.data);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           var errorMessage = xhr.status + ': ' + xhr.statusText;
           if (xhr.status === 404) {
             errorMessage = 'No se encontró la página solicitada.';
@@ -452,6 +461,11 @@
             { data: 'ShiptoID' },
             { data: 'ShipName' },
           ],
+          columnDefs: [{
+            sortable: false,
+            orderable: false,
+            targets: [3, 4, 5, 6, 7, 8],
+          }],
           paging: false,
           searching: false,
           deferRender: true
@@ -475,7 +489,7 @@
           } */
 
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
           var errorMessage = xhr.status + ': ' + xhr.statusText;
           if (xhr.status === 404) {
             errorMessage = 'No se encontró la página solicitada.';
@@ -488,25 +502,14 @@
     });
 
 
-
-    /* serialTable.DataTable({
-      columns: [
-        { data: 'LOTSERNBR' },
-        { data: 'InvtID' },
-        { data: 'STATUS' },
-        { data: 'PESO' },
-        { data: 'CESTA' },
-        { data: 'PALETA' },
-      ],
-      scrollCollapse: false,
-      paging: true,
-      searching: false,
-      deferRender: true,
-      lengthChange: false
-    }).clear().draw(); */
-
     serialTable.DataTable({
       columns: [
+        {
+          data: null,
+          render: function (data, type, row, meta) {
+            return '<label class="form-check" class="form-check-label"><input type="checkbox" class="checkbox-item"><span class="form-check-sign"></span></label>';
+          },
+        },
         { data: 'LOTSERNBR' },
         { data: 'InvtID' },
         { data: 'STATUS' },
@@ -514,13 +517,46 @@
         { data: 'CESTA' },
         { data: 'PALETA' },
       ],
+      columnDefs: [
+        {
+          sortable: false,
+          orderable: false,
+          targets: [0, 2, 3, 5, 6], //desactiva las columnas que no se van a ordenar
+        }
+      ],
       scrollCollapse: false,
       paging: true,
       searching: false,
       deferRender: true,
-      lengthChange: false
+      lengthChange: false,
     });
 
+    // Checkbox all
+    $('#checkbox-all').on('change', function () {
+      $('.checkbox-item').prop('checked', $(this).prop('checked'));
+    });
+
+    // Checkbox item
+    serialTable.on('change', '.checkbox-item', function () {
+      if (!$(this).prop('checked')) {
+        $('#checkbox-all').prop('checked', false);
+      } else if ($('.checkbox-item:checked').length === $('.checkbox-item').length) {
+        $('#checkbox-all').prop('checked', true);
+      }
+    });
+
+    /* $.ajax({
+      type: "GET",
+      url: "{% url 'prefixSerialsVa' %}",
+      dataType: "json",
+      success: function (response) {
+        const dataPrefix = response.dataPrefix;
+        console.log(dataPrefix);
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+      }
+    }); */
 
     // Agregar evento click a cada fila de la tabla
     addDetailTable.on('click', 'tbody tr', { passive: true }, function () {
@@ -535,7 +571,7 @@
       const buttonAddSerials = $("#botonAnhadirSerial");
       const serialInput = $("#add-producto");
       const addSerialsInfo = $("#add-serials-info");
-      
+
       // Crear un arreglo vacío para almacenar los seriales ingresados
       var LotSerList = [];
       const serialesIngresados = [];
@@ -559,10 +595,24 @@
 
       serialInput.on('keypress', e => {
         if (e.keyCode === 13) {
-            agregarSerial();
-          }
+          agregarSerial();
+        }
       });
-      
+
+      /*  serialInput.on('keyup', () => {
+         const serial = serialInput.val();
+         numCaracteres = serial.length;
+     
+         if (numCaracteres === 12) {
+           timeoutId = setTimeout(() => {
+             agregarSerial();
+           }, 200);
+         } else if (numCaracteres === 13) {
+           clearTimeout(timeoutId);
+           agregarSerial();
+         }
+       }); */
+
       // Función para agregar un serial a la tabla y al arreglo
       const agregarSerial = () => {
 
@@ -570,7 +620,18 @@
         console.log('Serial ingresado:', serial);
         const countLotserNbr = serial.match(/[a-zA-Z]/g);
         const cantidadLetras = countLotserNbr ? countLotserNbr.length : 0;
+        /* 
+        const prefix = serial.substring(0, 2); // Opcionalmente, puedes cambiar el 2 por 3 para manejar prefijos de 3 letras
+        console.log("prefijo:");
+        console.log(prefix);
+        // Verificar si el prefijo coincide con alguno de los valores de LotSerFxdVal
+        const matchingValues = Object.values(dataPrefix).filter(item => item.LotSerFxdVal === prefix);
+        if(matchingValues){
+          console.log("el prefijo es igual:");
+        } */
 
+        console.log(countLotserNbr);
+        console.log(cantidadLetras);
         if (serial.length === 12 || serial.length === 13) { // Verificar que la cadena de caracteres sea entre igual a 12 o 13 caracteres
 
           if (serialesIngresados.includes(serial)) { // Verificar si el serial ya ha sido ingresado
@@ -607,10 +668,10 @@
                 }
 
                 serialTable.DataTable().rows.add(nuevosElementos).draw();
-                
+
                 LotSerList = LotSerList.concat(nuevosElementos);
                 console.log(LotSerList);
-			          console.log("la candiadad de letras es: " + cantidadLetras);
+                console.log("la candiadad de letras es: " + cantidadLetras);
                 serialesIngresados.push(serial); // Agregar el serial al arreglo de seriales ingresados
 
                 const todosIguales = LotSerList.every(item => item.InvtID === LotSerList[0].InvtID);
@@ -636,7 +697,7 @@
             }
           });
 
-        } 
+        }
         else {
           if (serial === '') {
             addSerialsInfo.text('¡No Se Permite Campos Vacios!, Ingrese Un Serial!!');
@@ -650,301 +711,128 @@
         }
       };
 
+      // Evento para mostrar la alerta de eliminación al hacer clic en el botón
+      $('#alert_demo_8').click(function (e) {
+        e.preventDefault();
+        showDeleteConfirmationModal();
+      });
 
-
-      
-    
-    
-    // Jquery para mostrar alerta de confirmación al cerrar el modal de la vista que añade los seriales
-   /*  $('#alert_demo_8').click(function (e) {
-      e.preventDefault();
-      swal({
-        title: '¿Deseas Eliminar Los Seriales Seleccionados?',
-        text: "No podrás revertir esto.!",
-        icon: 'warning',
-        buttons: {
-          cancel: {
-            visible: true,
-            text: 'No, Cancelar!',
-            className: 'btn btn-danger'
-          },
-          confirm: {
-            text: 'Sí, Eliminar!',
-            className: 'btn btn-success'
+      // Evento para mostrar la alerta de eliminación al hacer clic fuera del modal
+      $(document).click(function (event) {
+        var target = $(event.target);
+        if (target.is(detailModal) && detailModal.is(':visible')) {
+          if ($.fn.DataTable.isDataTable(serialTable)) {
+            var tablaDatos = serialTable.DataTable().data();
+            if (tablaDatos.any()) {
+              showDeleteConfirmationModal();
+            } else {
+              detailModal.modal('hide');
+            }
           }
         }
-      }).then((willDelete) => {
-        if (willDelete) {
-              const tablaDatos = serialTable.DataTable().data();
-              if (tablaDatos.any()) {
-                LotSerList = [];
-                //serialesIngresados = [];
-                serialTable.DataTable().clear().draw();
-                detailModal.modal('hide');
-                console.log("Seriales Eliminados: ");
-                console.log(LotSerList);
-                swal("¡Has Eliminado Los Seriales Con Éxito!", {
-                  icon: "success",
-                  buttons: {
-                    confirm: {
-                      className: 'btn btn-success'
-                    }
-                  }
-                });
-              } else {
-                swal("¡No Se Ha Cargado Ningun Serial Para Eliminar!", {
-                  icon: "warning",
-                  buttons: {
-                    confirm: {
-                      className: 'btn btn-success'
-                    }
-                  }
-                });
-              }
-        } else {
-          console.log("Seriales Salvados: ");
-          console.log(LotSerList);
-          swal("¡Tus Seriales Han Sido Salvados!", {
-            buttons: {
-              confirm: {
-                className: 'btn btn-success'
-              }
-            }
-          });
-        }
       });
-    }); */
 
-
-// Evento click del documento para cerrar el modal y eliminar los seriales si se hace clic fuera del modal
-  /* $(document).click(function (event) {
-    var target = $(event.target);
-    
-    if (target.is(detailModal) && detailModal.is(':visible')) {
-      console.log("Visible");
-      if ($.fn.DataTable.isDataTable(tablaSeriales)) {
-        var tablaDatos = tablaSeriales.DataTable().data();
-        if (tablaDatos.any()) {
-          swal({
-            title: '¿Deseas Eliminar Los Seriales Seleccionados?',
-            text: "No podrás revertir esto.!",
-            icon: 'warning',
-            buttons: {
-              cancel: {
-                visible: true,
-                text: 'No, Cancelar!',
-                className: 'btn btn-danger'
-              },
-              confirm: {
-                text: 'Sí, Eliminar!',
-                className: 'btn btn-success'
-              }
+      // Función para mostrar la alerta de eliminación
+      function showDeleteConfirmationModal() {
+        swal({
+          title: '¿Deseas Eliminar Los Seriales Seleccionados?',
+          text: "No podrás revertir esto.!",
+          icon: 'warning',
+          buttons: {
+            cancel: {
+              visible: true,
+              text: 'No, Cancelar!',
+              className: 'btn btn-outline-danger'
+            },
+            confirm: {
+              text: 'Sí, Eliminar!',
+              className: 'btn btn-outline-success'
             }
-          }).then((willDelete) => {
-            if (willDelete) {
+          }
+        }).then((willDelete) => {
+          if (willDelete) {
+            const tablaDatos = serialTable.DataTable().data();
+            if (tablaDatos.any()) {
               LotSerList = [];
               //serialesIngresados = [];
               serialTable.DataTable().clear().draw();
               detailModal.modal('hide');
+              console.log("Seriales Eliminados: ");
               console.log(LotSerList);
               swal("¡Has Eliminado Los Seriales Con Éxito!", {
                 icon: "success",
                 buttons: {
                   confirm: {
-                    className: 'btn btn-success'
+                    className: 'btn btn-outline-success'
                   }
                 }
               });
             } else {
-              console.log(LotSerList);         
-              swal("¡Tus Seriales Han Sido Salvados!", {
+              swal("¡No Se Ha Cargado Ningun Serial Para Eliminar!", {
+                icon: "warning",
                 buttons: {
                   confirm: {
-                    className: 'btn btn-success'
+                    className: 'btn btn-outline-success'
                   }
                 }
               });
-              detailModal.modal('show');
             }
-          });
-        } else {
-          swal("La tabla de seriales está vacía.", {
-            icon: "warning",
-            buttons: {
-              confirm: {
-                className: 'btn btn-success'
-              }
-            }
-          });
-        }
-      }
-    }
-  }); */
-
-    // Evento para mostrar la alerta de eliminación al hacer clic en el botón
-    $('#alert_demo_8').click(function (e) {
-      e.preventDefault();
-      showDeleteConfirmationModal();
-    });
-
-    // Evento para mostrar la alerta de eliminación al hacer clic fuera del modal
-    $(document).click(function (event) {
-      var target = $(event.target);
-      if (target.is(detailModal) && detailModal.is(':visible')) {
-        if ($.fn.DataTable.isDataTable(serialTable)) {
-          var tablaDatos = serialTable.DataTable().data();
-          if (tablaDatos.any()) {
-            showDeleteConfirmationModal();
           } else {
-            detailModal.modal('hide');
-          }
-        }
-      }
-    });
-
-    // Función para mostrar la alerta de eliminación
-    function showDeleteConfirmationModal() {
-      swal({
-        title: '¿Deseas Eliminar Los Seriales Seleccionados?',
-        text: "No podrás revertir esto.!",
-        icon: 'warning',
-        buttons: {
-          cancel: {
-            visible: true,
-            text: 'No, Cancelar!',
-            className: 'btn btn-danger'
-          },
-          confirm: {
-            text: 'Sí, Eliminar!',
-            className: 'btn btn-success'
-          }
-        }
-      }).then((willDelete) => {
-        if (willDelete) {
-          const tablaDatos = serialTable.DataTable().data();
-          if (tablaDatos.any()) {
-            LotSerList = [];
-            //serialesIngresados = [];
-            serialTable.DataTable().clear().draw();
-            detailModal.modal('hide');
-            console.log("Seriales Eliminados: ");
+            console.log("Seriales Salvados: ");
             console.log(LotSerList);
-            swal("¡Has Eliminado Los Seriales Con Éxito!", {
-              icon: "success",
+            swal("¡Tus Seriales Han Sido Salvados!", {
               buttons: {
                 confirm: {
-                  className: 'btn btn-success'
+                  className: 'btn btn-outline-success'
                 }
               }
             });
-          } else {
-            swal("¡No Se Ha Cargado Ningun Serial Para Eliminar!", {
-              icon: "warning",
-              buttons: {
-                confirm: {
-                  className: 'btn btn-success'
-                }
-              }
-            });
+            detailModal.modal('show');
           }
-        } else {
-          console.log("Seriales Salvados: ");
-          console.log(LotSerList);
-          swal("¡Tus Seriales Han Sido Salvados!", {
-            buttons: {
-              confirm: {
-                className: 'btn btn-success'
-              }
-            }
-          });
-          detailModal.modal('show');
-        }
-      });
-    }
+        });
+      }
     });
 
 
 
-    /* $.ajax({
-      type: "GET",
-      url: "{% url 'prefixSerialsVa' %}",
-      dataType: "json",
-      success: function(response) {
-        const dataPrefix = response.dataPrefix;
-        console.log(dataPrefix);
-        // Realiza las validaciones necesarias con los datos obtenidos.
-      },
-      error: function(xhr, status, error) {
-        console.log(error);
-      }
-    }); */
 
 
 
-});
-
-
+    /*  serialInput.on('keyup', () => {});
+     
+     function agregarSerial() {
+       const serial = serialInput.val(); // Agregar el serial en la variable serial
+       console.log('Serial ingresado:', serial);
+       
+       // Obtener el prefijo del serial
+       const prefix = serial.substring(0, 2); // Opcionalmente, puedes cambiar el 2 por 3 para manejar prefijos de 3 letras
+       
+       // Verificar si el prefijo coincide con alguno de los valores de LotSerFxdVal
+       const matchingValues = Object.values(dataPrefix).filter(item => item.LotSerFxdVal === prefix);
+       
+       if (matchingValues.length > 0) { // Si hay coincidencias
+         const expectedLength = 10 + matchingValues[0].LotSerFxdVal.length; // Opcionalmente, puedes cambiar el 10 por 11 para manejar prefijos de 3 letras
+         if (serial.length === expectedLength) { // Si la longitud del serial es la esperada
+           console.log('Serial válido');
+           // Aquí puedes agregar el código para procesar el serial válido
+         } else {
+           console.log('La longitud del serial es incorrecta');
+         }
+       } else { // Si no hay coincidencias
+         console.log('El prefijo del serial es incorrecto');
+       }
+     } */
+  });
 </script>
 
-<!-- <script>
-
-  /* serialInput.on('keyup', () => {
-        const serial = serialInput.val();
-        numCaracteres = serial.length;
-
-        if (numCaracteres === 12) {
-          timeoutId = setTimeout(() => {
-            agregarSerial();
-          }, 200);
-        } else if (numCaracteres === 13) {
-          clearTimeout(timeoutId);
-          agregarSerial();
-        }
-      }); */
-
-      /*  closeButton.addEventListener("click", () => {
-         detailModal.modal('hide');
-       }); */
+<script>
 
 
 
-  $('#alert_demo_8').click(function (e) {
-    swal({
-      title: '¿Deseas Eliminar Los Seriales Seleccionados?',
-      text: "No podrás revertir esto.!",
-      icon: 'warning',
-      buttons: {
-        cancel: {
-          visible: true,
-          text: 'No, Cancelar!',
-          className: 'btn btn-danger'
-        },
-        confirm: {
-          text: 'Sí, Eliminar!',
-          className: 'btn btn-success'
-        }
-      }
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("¡Has Eliminado Los Seriales Con Éxito!", {
-          icon: "success",
-          buttons: {
-            confirm: {
-              className: 'btn btn-success'
-            }
-          }
-        });
-      } else {
-        swal("¡Tus Seriales Han Sido Salvados!", {
-          buttons: {
-            confirm: {
-              className: 'btn btn-success'
-            }
-          }
-        });
-      }
-    });
-  })
-</script> -->
+  /*  closeButton.addEventListener("click", () => {
+     detailModal.modal('hide');
+   });*/
+
+</script>
 
 {% endblock javascripts %}

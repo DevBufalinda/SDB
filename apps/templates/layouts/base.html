@@ -56,19 +56,16 @@
 
 			{% block content %}{% endblock content %}
 
-			<!-- {% include 'includes/footer.html' %} -->
+			{% include 'includes/footer.html' %}
 
 		</div>
 
 		{% if request.user.is_authenticated %}
 
-		<!-- Custom template | don't include it in your project! -->
-		{% include 'includes/configuration-plugin.html' %}
-
 		{% endif %}
 
 	</div>
-
+	
 	{% include 'includes/scripts.html' %}
 
 	<!-- Specific Page JS goes HERE  -->
